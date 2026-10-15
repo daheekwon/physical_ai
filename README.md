@@ -24,6 +24,17 @@ pip install -r requirements-experiment.txt
 
 Several pipelines require external simulators, pretrained checkpoints, and expert datasets. Those assets are not distributed here; update the paths in the relevant file under `configs/` before running a pipeline.
 
+## Reproducing external inputs
+
+Public third-party repositories, datasets, and checkpoints are pinned in a bootstrap script. It downloads only public inputs, verifies their sizes and SHA-256 hashes, and keeps them outside Git:
+
+```bash
+python scripts/bootstrap_assets.py sources --profile core
+python scripts/bootstrap_assets.py assets --profile core
+```
+
+See [reproducibility/README.md](reproducibility/README.md) for profiles, disk requirements, provenance, and the explicitly manual inputs whose original public source was not recorded.
+
 ## Running checks
 
 Run the test suite from the repository root:
