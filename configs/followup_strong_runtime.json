@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "methods": ["gaussian_action", "lipo_full_command", "groove_full_command", "lipo_polynomial_executed", "groove_polynomial_executed", "soft_sensitivity", "nonlinear_wm", "controller_low2_lewm", "lewm_low2_lewm"],
+  "nonlinear_budgets": [16,64,256],
+  "repetitions": 3,
+  "latency_budgets_seconds": [0.01,0.025,0.05,0.1,0.2,0.5,1.0,2.0],
+  "scope": "Fresh render through delivered8actions, full uncached encoder/Jacobian/eigensystem/optimizer/finite prediction as required. Existing nominal-calibrated strong settings; spectral rank2 uses existing four-radius family generation and locked LeWM verifier, controller vs LeWM basis. Nonlinear budgets selected under shared calibration p95 caps; no test tuning. Three randomized timed repetitions plus one warmup per variant on first state; GPU synchronize total only. No future object outcomes in selection. Geometry/filter broader family separately labeled. No actuationdelay injection. Shared host/GPU; sourcepolicy generation/model loading/prefix physics/outcome evaluation excluded."
+}

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "verifier": "proprio_contact",
+  "alpha_grid": [0.0, 0.25, 0.5, 1.0, 2.0],
+  "constant_radius_grid": [0.025, 0.05, 0.1, 0.2, 0.4],
+  "residual_cap": 10.0,
+  "base_radius": 0.4,
+  "early_stop_gain": 0.1,
+  "early_stop_fraction": 0.9,
+  "methods": ["fixed", "allowance", "compute", "both", "constant_shrink", "cheap_only"],
+  "minimum_norm": 0.000001,
+  "minimum_predicted_gain": 0.00000001,
+  "meaningful_gain": 0.1,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "deadline_seconds": [0.05, 0.1, 0.5],
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "calibration": "Only90 nominal calibration roots from24newfamilies; same fixedcontact verifier tau. Choose one alpha shared by allowance/both and one constant radius by usefuljoint rate then meanactualjerkgain, requiring empirical R<=0.1 and active>=0.25 in each relevant arm. No condition-specific retuning; if infeasible mark rule unqualified and keep diagnostics separate.",
+  "allowance": "Fit PD on first125past physics transitions; predict last125past transitions using known delivered Cartesian commandtargets and observed midpoint robot position/velocity. Residual is max trajectory XYZ/2mm and yaw/2deg error; proxy only, no future/object/material input. Radius=0.4/(1+alpha*min(residual,10)). Same refreshed fullpast robot model and compiler in every arm.",
+  "computation": "Stage1 generates and scores pastPD optimizer candidates at all5original radii. Stage2 generates/scores the same two random polynomial directions and signs as original bank. Earlystop only if approved stage1 predictedgain>=0.1 and >=0.9 of best unrestricted stage1 gain. Otherwise fullbank. Canonical original label order breaks ties; cheap_only always skipsstage2. Fixed/allowance generatefullbank; constant_shrink changesacceptance only.",
+  "scope": "Cube non-WM contact verifier adaptation in same polynomial candidate family. Actual stagedgeneration/scoring elapsedtime and counts; no cheaper latentproxy or skippedphysics safety claim. Compare original90cal+48dev roots and later336shifteddev contexts. Nominal-only parameter calibration before shifted evaluation, sharedhost timings observational. Fourallowance/compute arms plus fixedradius and stage1 controls; repeatedclosedloop/final/delay scopes separate. Does not supersede frozen64family basicfinalprotocol."
+}

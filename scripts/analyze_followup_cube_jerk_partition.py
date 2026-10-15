@@ -1,0 +1,42 @@
+"""Post-hoc energy decomposition of audited Cube episodes; no selector change."""
+import hashlib,json,sys,time
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+import numpy as np,pandas as pd
+from zj_wam.io import resolve,sha256,write_json
+from scripts.analyze_followup_response_selection import mean_ci
+BASE=resolve('artifacts/followup_v1');SRC=BASE/'cube_policy_refinement';OUT=BASE/'cube_jerk_partition';read=lambda p:json.loads(p.read_text())
+
+def energy_terms(p):return np.sum(np.diff(p,n=3,axis=0)**2,axis=1)/.002**5
+
+def main():
+    OUT.mkdir(exist_ok=True);done=read(SRC/'pipeline_complete.json');assert done['episodes']==48 and done['raw_audit_sha256']==sha256(SRC/'raw_audit.json');cfg=read(resolve('configs/followup_cube_policy_refinement.json'));assert cfg['warmup_controls']==15 and cfg['horizon']==5;old=pd.read_csv(SRC/'evaluation.csv');inputs={str(p.relative_to(resolve('.'))):sha256(p) for p in [Path(__file__),SRC/'pipeline_complete.json',SRC/'raw_audit.json',SRC/'evaluation.csv',resolve('configs/followup_cube_policy_refinement.json')]};rows=[];rawenergy={};maxerr=0.
+    for seed in cfg['development_seeds']:
+        with np.load(SRC/f'{seed}_nominal.npz') as a:reference=a['physics_eef_position'];reftime=a['physics_time'];refobject=a['physics_object_pose']
+        e0=energy_terms(reference);ends=np.arange(3,len(reference));warm=ends<15*25;chunk=np.zeros(len(e0),bool);control=np.zeros(len(e0),bool)
+        for boundary in range(25,len(reference),25):
+            crossing=(ends>=boundary)&(ends-3<boundary);control|=crossing
+            if boundary>=15*25 and (boundary-15*25)%(5*25)==0:chunk|=crossing
+        masks={'warmup_fixed':warm,'after_chunk_boundary':~warm&chunk,'after_internal_control_boundary':~warm&control&~chunk,'after_other':~warm&~control};assert np.all(np.sum(list(masks.values()),axis=0)==1)
+        for method in cfg['methods']:
+            path=SRC/f'{seed}_{method}.npz';meta=read(path.with_suffix('.json'));assert meta['data_sha256']==sha256(path);inputs[str(path.relative_to(resolve('.')))]=sha256(path)
+            with np.load(path) as a:
+                p=a['physics_eef_position'];np.testing.assert_array_equal(p[:375],reference[:375]);np.testing.assert_array_equal(a['physics_time'],reftime);obj=a['physics_object_pose'];d=np.linalg.norm(obj[:,:3]-refobject[:,:3],axis=1)/.002;q=obj[:,3:]/np.linalg.norm(obj[:,3:],axis=1,keepdims=True);q0=refobject[:,3:]/np.linalg.norm(refobject[:,3:],axis=1,keepdims=True);r=2*np.arccos(np.clip(abs(np.sum(q*q0,axis=1)),0,1))/np.deg2rad(2);failed=np.flatnonzero(np.maximum(d,r)>1);first=float(reftime[failed[0]]-float(a['initial_time'])) if len(failed) else None
+            terms=energy_terms(p);independent=np.sum((p[3:]-3*p[2:-1]+3*p[1:-2]-p[:-3])**2,axis=1)/.002**5;err=float(abs(terms-independent).max()/max(terms.max(),1e-12));maxerr=max(maxerr,err);np.testing.assert_allclose(terms,independent,atol=1e-4,rtol=1e-7);np.testing.assert_array_equal(terms[warm],e0[warm]);total=float(terms.sum());nominal=float(e0.sum());gain=(nominal-total)/nominal;previous=old[(old.seed==seed)&(old.method==method)].iloc[0];np.testing.assert_allclose(gain,previous.jerk_gain,atol=1e-10,rtol=0)
+            row={'seed':seed,'initial_pose_family':seed,'method':method,'total_jerk_energy':total,'nominal_total_energy':nominal,'jerk_gain':gain,'fixed_warmup_fraction':float(e0[warm].sum()/nominal),'unconstrained_postwarmup_gain_ceiling':float(1-e0[warm].sum()/nominal),'postwarmup_gain':float((e0[~warm].sum()-terms[~warm].sum())/e0[~warm].sum()),'first_global_violation_seconds':first}
+            for name,mask in masks.items():row[name+'_energy']=float(terms[mask].sum());row[name+'_fraction']=float(terms[mask].sum()/total);row[name+'_contribution_to_total_gain']=float((e0[mask].sum()-terms[mask].sum())/nominal)
+            np.testing.assert_allclose(sum(row[name+'_energy'] for name in masks),total,atol=1e-6,rtol=1e-12);np.testing.assert_allclose(sum(row[name+'_contribution_to_total_gain'] for name in masks),gain,atol=1e-12);assert total>=e0[warm].sum()-1e-6 and gain<=row['unconstrained_postwarmup_gain_ceiling']+1e-10;rows.append(row);rawenergy[str(seed)+'_'+method]=terms
+        print('PARTITION',seed,flush=True)
+    f=pd.DataFrame(rows);f.to_csv(OUT/'evaluation.csv',index=False);np.savez_compressed(OUT/'energies.npz',**rawenergy);summary=[]
+    for method,g in f.groupby('method'):
+        summary.append({'method':method,'families':len(g),**{k:mean_ci(g,k) for k in ['jerk_gain','fixed_warmup_fraction','unconstrained_postwarmup_gain_ceiling','postwarmup_gain','after_chunk_boundary_fraction','after_internal_control_boundary_fraction','after_other_fraction']},'median_first_violation_seconds':None if not g.first_global_violation_seconds.notna().any() else float(g.first_global_violation_seconds.median())})
+    nominal=f[f.method=='nominal'];analysis={'episodes':len(f),'families':len(nominal),'summary':summary,'families_ceiling_below_10percent':int((nominal.unconstrained_postwarmup_gain_ceiling<.1).sum()),'fixed_warmup_fraction_range':[float(nominal.fixed_warmup_fraction.min()),float(nominal.fixed_warmup_fraction.max())],'scope':'Posthoc diagnostic of fixed warmup and finite-difference energy at command/chunk boundaries. Original wholeepisode metric and10percentthreshold unchanged. Ceiling is a loose necessary bound assuming remaining nonnegative energy can vanish, not a physically attainable oracle. No future energy is used for selection; no new physics.'};write_json(OUT/'analysis.json',analysis);write_json(OUT/'raw_audit.json',{'inputs':inputs,'episodes':len(f),'physics_samples':48*7500,'derivative_terms':sum(len(v) for v in rawenergy.values()),'max_relative_stencil_error':maxerr,'checks':['All source hashes against completed audited episode metadata','Exact same first375physics samples across allmethods','Independent direct third-difference stencil versus np.diff','Disjoint exhaustive masks and energy/gain reconstruction','All full-episode jerk gains reproduce original audited evaluation','Nonnegative fixed-prefix lower bound for allmethods'],'analysis_sha256':sha256(OUT/'analysis.json')})
+    lines=['<!-- BEGIN CUBE JERK PARTITION -->','## Cube의 낮은 jerk 개선: 고정 초기 구간과 이후 구간 분해','',f"완료된 48개 episode의 실제 EEF 위치에서 jerk 에너지를 다시 계산했다. 첫 15개 control(0.75초)은 수정하지 않으며 네 방법의 첫 375개 물리 표본이 정확히 같았다. 초기 구간이 전체 jerk에서 차지하는 비율은 family별 **{100*analysis['fixed_warmup_fraction_range'][0]:.2f}–{100*analysis['fixed_warmup_fraction_range'][1]:.2f}%**다.",'',f"초기 에너지만 남고 그 이후의 jerk 에너지가 모두 0이 되는 느슨한 상한을 계산했을 때, 최대 감소량이 10% 미만인 family는 **{analysis['families_ceiling_below_10percent']}/12개**였다. 따라서 초기 구간 때문에 목표 달성이 막히는지와, 이후 동작에서도 개선이 작은지를 구분할 수 있다. 이 상한은 물리적으로 달성 가능한 correction이 존재한다는 증거가 아니다.",'','| 방법 | 전체 jerk 감소, % | 초기 이후 구간 jerk 감소, % | 첫 물체 궤적 위반 시각 중앙값, s |','| --- | --- | --- | --- |']
+    for r in summary:
+        t='—' if r['median_first_violation_seconds'] is None else f"{r['median_first_violation_seconds']:.3f}";lines.append(f"| {r['method']} | {100*r['jerk_gain']['mean']:.2f} | {100*r['postwarmup_gain']['mean']:.2f} | {t} |")
+    lines+=['','추가로 제어 명령 경계를 가로지르는 4점 미분 stencil의 에너지를 chunk 경계·chunk 내부 명령 경계·나머지 구간으로 분해했다. 이는 jerk가 언제 발생하는지 보는 진단이며 접촉이나 solver가 원인이라는 인과 판정은 아니다. 접촉력·gripper 동작을 고정한 상태에서 얻을 수 있는 실제 smoothing 상한도 아니다.','','주 성능은 여전히 전체 15초의 물체 궤적 보존과 전체 jerk 10% 감소다. 초기 구간을 평가에서 제외해 성공 기준을 바꾸지 않았다. 이후 구간 수치는 후보/경계 설계와 정책용 calibration의 우선순위를 정하는 보조 분석이다.','','근거: [구간별 분석](../artifacts/followup_v1/cube_jerk_partition/analysis.json), [episode별 에너지·첫 위반 시각](../artifacts/followup_v1/cube_jerk_partition/evaluation.csv), [원시 검증](../artifacts/followup_v1/cube_jerk_partition/raw_audit.json).','<!-- END CUBE JERK PARTITION -->'];section='\n'.join(lines);doc=resolve('docs/ZJ_WAM_FOLLOWUP_RESULTS.md');s=doc.read_text();begin=lines[0];end=lines[-1]
+    if begin in s:i=s.index(begin);j=s.index(end)+len(end);s=s[:i]+section+s[j:]
+    else:i=s.index('<!-- END CUBE POLICY REFINEMENT -->')+len('<!-- END CUBE POLICY REFINEMENT -->');s=s[:i]+'\n\n'+section+s[i:]
+    doc.write_text(s);write_json(OUT/'completion_lock.json',{'source_sha256':sha256(Path(__file__)),'inputs':inputs,'analysis_sha256':sha256(OUT/'analysis.json'),'audit_sha256':sha256(OUT/'raw_audit.json'),'section_sha256':hashlib.sha256(section.encode()).hexdigest(),'unix':time.time()});print(json.dumps(analysis,indent=2),flush=True)
+
+if __name__=='__main__':main()

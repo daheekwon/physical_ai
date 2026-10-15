@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "test_seed_start": 340200,
+  "test_families": 64,
+  "smoke_seed": 340000,
+  "mode": "past_pd_h5",
+  "methods": [
+    "controller_displacement",
+    "proprio_contact",
+    "lewm_global"
+  ],
+  "primary_method": "lewm_global",
+  "primary_baseline": "controller_displacement",
+  "primary_metric": "joint",
+  "practical_U_difference": 0.1,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "meaningful_gain": 0.1,
+  "position_tolerance_m": 0.002,
+  "rotation_tolerance_deg": 2.0,
+  "horizon": 5,
+  "suffix": 3,
+  "radii": [
+    0.025,
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "grasp_height_above_initial_max_m": 0.025,
+  "transport_height_above_initial_min_m": 0.04,
+  "family_bootstrap_resamples": 2000,
+  "scope": "Independent64 reserved Cube initial families after new24family calibration and prior12family development. Same privileged nativeplan and causal pastPDH5 compiler; same nonWM polynomial candidates, fixedfloat32 gripper and expectedXYZjerk ranking. Phase roots fixed by nominal contact/height rules, missing phases reported; all native failures retained. Freeze3nativeCPU verifier rules and primaryLeWM-minus-controllerU before any reserved policy actions. Primary practical gain requires Udelta>=10pp, pairedCI lower>0, R<=10percent and active>=25percent; contact comparisons exploratory. No repeated/shifted/latency/hardware claim, no pretraining-independence claim. Nominal stage establishes reference only."
+}

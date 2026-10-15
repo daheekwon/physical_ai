@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "cells": ["A", "B", "C", "D"],
+  "minimum_actual_gain": 0.0,
+  "scope": "PlanF9 A-D diagnostic on the audited common402development/calibration state bank. A=currentverifier+expectedjerkrank, B=currentverifier+actualjerkrank, C=actualdensepreservation+expectedjerkrank, D=actualdensepreservation+actualjerkrank. Sameactions,norms,nominalfallback;no thresholdfitting. A mustexactly reproduce locked parent choices. B/C/D usefuturephysicalresults and are notdeployable methods. Conditional risks exclude fallback;usefulnessdenominator allstates. No additive causalerror decomposition or newfinalclaim."
+}

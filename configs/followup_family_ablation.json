@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "dimensions_compared": {
+    "quintic_full": 4,
+    "lewm_low": 2,
+    "controller_low": 2,
+    "random_subspaces": {
+      "dimension": 2,
+      "replicates": 3
+    }
+  },
+  "radii": [
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "expanded_families": [
+    "interior sample values (degree <=H-1 interpolant, endpoint values fixed)",
+    "cubic spline (endpoint value and derivative fixed)"
+  ],
+  "actual_boundary": "null space of controller terminal position and velocity response, chunk end; evaluated actual residual <=1e-3",
+  "horizons": [
+    5,
+    10,
+    20
+  ],
+  "selection": "No object outcomes used by optimizer. Four-radius oracle is diagnostic only. Later fixed-verifier comparisons required.",
+  "budgets": "One identical SLSQP solve per radius per subspace; three random replicas reported separately, not best-of-three."
+}

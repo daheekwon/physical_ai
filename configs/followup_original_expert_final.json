@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "smoke_original_episodes": [1],
+  "test_families": 21,
+  "family_id_offset": 800000,
+  "window_fractions": [0.25, 0.5, 0.75],
+  "history_actions": 10,
+  "horizon": 5,
+  "suffix": 3,
+  "methods": ["controller", "contact", "lewm_global", "dino_patch_rms", "dino_patch_mean"],
+  "meaningful_gain": 0.1,
+  "primary_method": "dino_patch_rms",
+  "primary_baseline": "lewm_global",
+  "practical_U_difference": 0.1,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "nominal_bound_tolerance": 0.000000001,
+  "bound_policy": "If any of the8known nominal relative actions exceeds1+tolerance, retain the prespecified state with nominalfallback for allmethods; no clipping or state removal. Unbounded originalprefix remains reference, explicitlyrecorded. Predictions/corrections only on eligiblewindows; no successfilter.",
+  "scope": "New downstream originalexpert21initialfamilies absentfromold185HDF5. Three timefraction windows/family,63states,one H5correction plus3unchangedsuffix. Nominal absolute targets compiled by knownpusherPD withoutfutureobjectstate. Samefrozen nonWM polynomialbank andnativeCPUmodelrules fromoldexpertcalibration. Allneuralweights frozen; DINO isthirdpartyretrain. Maincontrast DINOpatchRMS-LeWM U; allmethods andfamilyintervals reported. All21available families used,precisionlimited; no powered-equivalence or fullpopulation safetyclaim. No repeatedepisode/latency/adaptationclaim. Cleanoriginalexpert differsfromoldnoisyexpert-derived actiondistribution; pretrainingexposure distinct. Testoutcomes onlyafter auditedsmoke, auditednativeCPUcalibration andfinalprotocol lock."
+}

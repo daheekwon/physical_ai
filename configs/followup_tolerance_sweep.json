@@ -1,0 +1,10 @@
+{
+  "version":1,
+  "methods":["controller_pusher","lewm_global","vision_contact","vision_adaptive"],
+  "multipliers":[[1.0,1.0],[0.5,1.0],[2.0,1.0],[1.0,0.5],[1.0,2.0],[0.5,0.5],[2.0,2.0]],
+  "variants":["fixed_original","shared_tolerance_input","per_tolerance_calibration"],
+  "coverage":"Fixed absolute coverage-loss tolerance0.02 at chunk and suffix endpoints.",
+  "shared_rule":"Use minimum(position_multiplier,rotation_multiplier) to scale score threshold; additionally multiply radius by min(1,minimum_multiplier). One base tau/radius fitted jointly to allseven nominal calibration tolerance settings, with risk/coverage constraints in each. Conservative heuristic, not a guarantee. Deployment receives tolerances but no condition-specific retuning.",
+  "calibration":"Same4radii*41score-quantile search per base rule, maximize average predicted useful coverage then predicted gain subject to overall/contact empirical risk<=0.1 and active>=0.25. Per-tolerance variant refits independently and is a reference, not adaptation. Shared variant sees7calibration tolerance constraints and its total computation is reported.",
+  "scope":"Retrospective development/calibration analysis of already executed common H5 polynomial bank. No new physical interventions, no finaltest. These tolerance values were prespecified in followup_v1; the exact shared scaling heuristic is a newly proposed development choice. State/family dependence retained. Existing raw dense traces are audited before reuse."
+}

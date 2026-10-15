@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "seed": 20261019,
+  "minimum_families": 64,
+  "family_rounding": 16,
+  "planning_half_width": 0.05,
+  "planning_z": 1.96,
+  "primary_comparison": ["lewm_global","controller_displacement"],
+  "minimum_practical_U_difference": 0.1,
+  "scope": "Independent downstream Cube final expert audit; retain original24reservedtestfamilies and add previously unused uniqueinitialfamilies before any correctedtestoutcome is read. Family count from max development family-level U/violation standard deviation under three verifiers, rounded to16 with minimum64. Normal-approximation planning estimate only; not guaranteed final width/power/certified safety. No test threshold/readout fitting. All4source-defined phases retained; phase availability exclusions documented before corrections.",
+  "execution": "Same source-defined phases, continuousXYZ/yaw8coefficient polynomial, frozen gripper,5actions+3suffix,500Hz physical position/full SO3rotation. Original2mm/2deg tolerance and actualEEFtranslation jerk>=10% criterion unchanged.",
+  "comparisons": ["common_bank_verifiers", "non_wm_proposal_bank", "matched_count_single_direction_banks", "frozen_capture_resolution_propagation"],
+  "exclusions": "Only missing prespecified source grasp phase or duplicate initialqpos/qvel family; never correction outcomes. Fixed random reserve order. Originalpilot0..5 and all train/development/calibration families excluded. Source phase times may coincide; report them without outcome-driven exclusion.",
+  "inference_cost_scope": "Offline final bank and fixed choices, not a measurement of fully optimized deployable Cube pipeline cost.",
+  "scheduling": "To avoid adding Cube GPU work during PushT timed runs, wait until final_expert/runtime_strong.done.json. PushT and Cube have separate final locks.",
+  "uncertainty": "Family bootstrap95% intervals. Primary paired U positive if lowerCI>0; declared practical improvement established only if lowerCI>=0.10 and empiricalrisk/activity criteria met. All other contrasts exploratory; no equivalence from nonsignificance. UpstreamWM pretraining exposure not excluded."
+}

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "representations": ["dino_patch_mean", "dino_spatial_quadrants", "dino_history_patch_mean", "dino_projected_patch_mean", "dino_projected_spatial_quadrants", "dino_projected_history_patch_mean"],
+  "learners": ["ridge", "mlp64"],
+  "targets": {"pusht": ["raw"], "ogb-cube": ["raw", "symmetry"]},
+  "cube_raw_learners": ["ridge"],
+  "resolution_quantile": 0.9,
+  "resolution_source": "calibration real-encoded effect errors, active candidates, equal weight per state; physical-unit weighted 90th percentile. Apply to development for directional interpretation only.",
+  "position_direction_cosine": 0.5,
+  "rotation_direction_cosine": 0.5,
+  "wrong_action_norm_ratio": [0.8, 1.25],
+  "wrong_action_max_cosine": 0.0,
+  "scope": "F4 real encoded endpoint differences and F5 predicted differences with same fixed supervised readout. No refitting readouts. Both absolute and effect errors, zero effect, current-state persistence and supported opposite-direction equal-norm wrong-action controls. Six DINO native/projected representations; Cube raw rotation ridge and symmetry ridge/MLP. Readout symmetry alignment is diagnostic; physical reference retains full rotation tolerance. All physical cases retained irrespective of directional resolvability. No acceptance-rule calibration, finaltest or deployment safety claim in this analysis."
+}

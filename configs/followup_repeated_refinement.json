@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "total_actions": 20,
+  "block_actions": 5,
+  "core_suffix_actions": 3,
+  "long_suffix_max_actions": 10,
+  "methods": ["short5_vision", "open20_quintic_vision", "open20_piecewise_vision", "repeat5_predicted_pose", "repeat5_observed_pose", "repeat5_online_gains", "repeat5_lewm"],
+  "allowance": "Reuse frozen H5 common-bank selector rules; no tuning after observing repeated outcomes. Long-horizon and repeated selection are distribution shifts, not covered by the calibration risk claim.",
+  "action_source": "Fixed expert action sequence; only correction reacts to method's own observations. This is not a reproduced closed-loop Diffusion Policy.",
+  "short_horizon_control": "Modify first five actions only, then replay remaining nominal actions. Evaluate same total physical time.",
+  "relinearization_control": "Observed pose vs model-propagated pose; identical per-block controller optimizer and candidate generation. This measures response-model observation refresh, not Jacobian recomputation.",
+  "piecewise_control": "Open-loop 20-action correction in four independent quintic blocks, 16 coefficients. Distinguishes reduced dimension from observation refresh.",
+  "long_suffix": "Keep every original eligible state. Use min(10, remaining recorded actions); at least three exist. Report suffix duration and 10-action eligible subset separately."
+}

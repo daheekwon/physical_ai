@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "shift_before_root_actions": 10,
+  "conditions": {
+    "nominal": {},
+    "friction_02": {"pair_friction":0.2},
+    "friction_08": {"pair_friction":0.8},
+    "gain_08_unknown": {"kp_multiplier":0.8},
+    "gain_12_unknown": {"kp_multiplier":1.2},
+    "rgb_noise_5": {"rgb_noise_std":5.0},
+    "rgb_noise_15": {"rgb_noise_std":15.0},
+    "friction_02_noise_15": {"pair_friction":0.2,"rgb_noise_std":15.0}
+  },
+  "methods": ["controller_pusher","vision_contact","vision_adaptive","lewm_global","gaussian_action"],
+  "protocol": "Shared72-candidate H5 polynomial bank perstate/condition plus calibrated Gaussian. Freeze original H5 selector rules; no condition-specific retuning. Evaluate selected actions only after all model scores and choices are fixed.",
+  "physical_change": "Apply shift10actions before root and retain through nominal/corrected execution; reconstruct actual shifted history byfullprefixreplay. Models receive resulting RGB androbotproprioception, notgroundtruth changedparameters. KnownPDmodel retainsnominalkp100 evenunderunknown gainshift.",
+  "sensing": "Add deterministicGaussianRGBnoise tosame3pastframes for allimagebasedmethods. Physicalgroundtruth evaluation remainsclean. Robotproprioception unchanged.",
+  "reference": "Same shifted state/history and samephysicalconditions, nominal versus selected correction, H5+suffix3. Compare conditions withinstate. Shift alone isnotcountedas correctionerror.",
+  "adaptation_scope": "Fixedcontact vs online2gainresponse estimation fromobservedshiftedpast. Full allowance/compute factorial remains a separate experiment.",
+  "data_scope": "Existing105development and105calibration states; finaltest remainslocked. No futurecandidate outcomes used forselection."
+}

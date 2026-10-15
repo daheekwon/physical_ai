@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "horizon": 5,
+  "radii": [0.05, 0.1, 0.2, 0.4],
+  "filter_sigma": [0.5, 1.0, 2.0],
+  "soft_weights": [0.01, 0.1, 1.0, 10.0],
+  "nonlinear_tau_multipliers": [0.25, 0.5, 1.0, 2.0],
+  "nonlinear_forward_budget": 64,
+  "nonlinear_extended_budget": 256,
+  "extended_development_families": 12,
+  "initializations": ["zero", "controller_optimum_at_same_radius"],
+  "geometric_bounds_px": [0.5, 1.0, 2.0, 4.0],
+  "geometric_action_radius": 0.4,
+  "geometric_variants": ["lipo_full_command", "groove_full_command", "lipo_polynomial_executed", "groove_polynomial_executed"],
+  "scope": "PushT 2D controller adapters, not original whole LiPo/GROOVE pipelines. Expert replay has no independently inferred overlapping chunks; no fabricated overlap, delay schedule, or higher-rate command interpolation. Full adapters alter all actions; polynomial variants use the shared quintic family and 100Hz objective. Control stays 10Hz.",
+  "sources": ["https://arxiv.org/html/2506.05165v1", "https://arxiv.org/html/2609.13695v1", "https://devsangho.github.io/GROOVE-public/"],
+  "groove_2d": "Reference square and four unoriented tight axes; tight=epsilon/3, wide=3epsilon, equal area. Reference-relative L1 path cap=1.5; select lowest mean third-difference position norm. Every 10Hz prefix bounded through exact PD response. Full chunk executed.",
+  "fairness": "All enforce raw action bounds and a declared normalized L2 cap. Record native forward/backward calls and optimizer time; a single shared numerical call budget is not equal wall time. Final compute-matched comparison remains separate."
+}

@@ -1,0 +1,15 @@
+{
+  "version":1,
+  "primary_profile":"full",
+  "primary_reference":"same_profile",
+  "primary_method":"lewm_global",
+  "primary_baseline":"controller_pusher",
+  "minimum_practical_U_difference":0.1,
+  "target_global_risk":0.1,
+  "minimum_active_fraction":0.25,
+  "families":12,
+  "planned_episodes":216,
+  "test_seeds":[213000,213001,213002,213003,213004,213005,213006,213007,213008,213009,213010,213011],
+  "scope":"Independent downstream latency test after full72development audit and new analyzer reproduction. Six methods x three timing profiles x twelve seeds; fixed300physicalticks. Original polynomial/refinement/PD/policy weights and expert calibration rules unchanged. Timing samples copied from complete audited calibration distribution, never refitted using latencytest. Compare each profile to own nominal and also original zero-latency nominal. Sameprofile estimates benefit conditional on timing-aware nominal, not preservation of original zero-latency task intent.",
+  "inference":"Paired family bootstrap for U/gain differences, exact binomial intervals for episode U/risk/success. Twelvefamilies cannot certify small failureprobability; no equivalence from zero difference. Allprofiles reported; primary full/sameprofile fixed beforetest. Test unseen to downstream selectors; WM pretraining exposure separately bounded."
+}

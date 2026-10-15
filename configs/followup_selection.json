@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "score_methods": ["action_norm", "controller_pusher", "lewm_global", "lewm_whitened", "lewm_object", "lewm_history_object", "state_contact", "state_contact_endpoint", "state_local", "state_adaptive", "vision_contact", "vision_contact_endpoint", "vision_local", "vision_adaptive"],
+  "radii": [0.05, 0.1, 0.2, 0.4],
+  "threshold_quantiles": 41,
+  "target_violation": 0.1,
+  "minimum_active_coverage": 0.25,
+  "meaningful_gain": 0.1,
+  "minimum_active_norm": 0.000001,
+  "minimum_predicted_gain": 0.00000001,
+  "bank_objective": "Maximize equal-state weighted candidate acceptance coverage, subject to overall/contact empirical risk",
+  "selector_objective": "Maximize predicted meaningful-improvement state coverage, then mean predicted gain, subject to overall/contact selected empirical risk and active coverage",
+  "constraints": "Same global rule for all states; true contact labels used only for calibration/evaluation strata, never selection input",
+  "test_lock": "These calibration files do not unlock test; strong optimizers and all primary contrasts must be frozen first."
+}

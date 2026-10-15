@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "seed": 20261010,
+  "split": "development",
+  "horizon": 5,
+  "dimension": 2,
+  "methods": [
+    "gradient_random0",
+    "gradient_random1",
+    "gradient_random2",
+    "gradient_controller",
+    "gradient_lewm",
+    "full"
+  ],
+  "relative_radii": [
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "gradient_relative_floor": 1e-12,
+  "scope": "Plan4.7C development-only. Common jerk gradient first axis; second axis selected in its orthogonal complement using three fixed random draws or restricted controller/LeWM minimum eigenvector. Full4D reference separate. Same72requested candidates per state,4radii,2signed+1optimizer per method. Signed gradient candidates intentionally shared across arms; unique/active counts explicit. Frozen controller verifier transferred unchanged, no new-risk certification; no test or method selection. Restricted-eigenspace LeWM construction differs from previous Gram-Schmidt augmentation and is reported separately. Reused Jacobian costs not online latency.",
+  "random_replicates": 3
+}

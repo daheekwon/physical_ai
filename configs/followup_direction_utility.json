@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "seed": 20261010,
+  "split": "development",
+  "horizon": 5,
+  "dimension": 2,
+  "methods": ["controller_low", "lewm_low", "random", "lewm_plus_gradient", "full"],
+  "relative_radii": [0.05, 0.1, 0.2, 0.4],
+  "gradient_relative_floor": 1e-12,
+  "scope": "Plan4.7A development-only. Same polynomial coordinates;2D controller/LeWM/random/gradient-augmented bases, full4D reference separate. Known-controller jerk gradient and previously computed frozen LeWM Jacobian; no future object input. Two signed projected-gradient candidates plus one constrained optimizer per radius/method. Signed candidates share an action-bound-feasible radius across all methods; optimizer uses the same radius budget but may have smaller applied norm. Equal requested candidate counts, duplicates/inactive explicit. Common controller verifier transferred unchanged from old calibration as diagnostic only; new candidate distribution not risk-calibrated. Physical oracle is evaluation only. No claim of LeWM-free generation for LeWM bases."
+}

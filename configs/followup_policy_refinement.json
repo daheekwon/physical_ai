@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "development_seeds": [210000,210001,210002,210003,210004,210005,210006,210007,210008,210009,210010,210011],
+  "calibration_seeds": [211000,211001,211002,211003,211004,211005,211006,211007,211008,211009,211010,211011],
+  "test_seeds": [212000,212001,212002,212003,212004,212005,212006,212007,212008,212009,212010,212011],
+  "methods": ["nominal","controller_pusher","vision_contact","vision_adaptive","lewm_global","gaussian_action"],
+  "max_actions": 300,
+  "policy_action_steps": 8,
+  "refinement_action_steps": 5,
+  "suffix_action_steps": 3,
+  "policy_noise_seed": "(20261011 + 1009*environment_seed + control_step) mod (2^31-1); reset for every policy call, same across methods",
+  "policy_history": "Actual two consecutive control-time observations, duplicate initial frame only at t=0",
+  "world_model_history": "Actual frames t-10,t-5,t and delivered relative actions t-10:t; first correction at t=16",
+  "action_interface": "At each policy call, compile all eight absolute targets once into bounded relative commands through known PD. Correct only first five relative commands; last three relative commands remain unchanged. Their realized absolute targets can shift after a correction. Next policy call stays at t+8.",
+  "bounds": "Clip absolute-to-relative nominal compilation to [-1,1] sequentially; record clipped count/target projection. Same adapter for every method.",
+  "termination": "Fixed300 actions even after first success; report first success, any success and final coverage separately. Tail shorter than8 is unrefined. Native benchmark stops on success and is a separate compatibility baseline.",
+  "local_evaluation": "After executed selection, replay delivered prefix in a separate simulator, execute nominal8, compare actual8 with H5+suffix3 E_obj and100Hzjerk usingactualprevious3actions. Counterfactual results never enter selection.",
+  "global_evaluation": "Compare each method with same-seed nominal policy fromepisode start at identical physical times; denseposition2px,rotation2deg,coverage loss0.02 atcontroltimes. Includes subsequent policy reactions. Global preservation andlocalpreservationreportedseparately.",
+  "rules": "Reuse frozen expert-H5 selectors and Gaussian calibration unchanged. This is a policy/distribution-shift diagnostic, not a newly calibrated repeated-risk guarantee.",
+  "scope": "F10 development/calibration; native50 official evaluationseeds separate fromthis newpolicyseedset. Test blockeduntilfinal lock. No policy or WMtraining. No deadline-matched claim untilseparate latency study."
+}

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "methods": ["controller", "contact", "lewm_global", "dino_patch_rms", "dino_patch_mean"],
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "minimum_norm": 0.000001,
+  "minimum_predicted_gain": 0.00000001,
+  "meaningful_gain": 0.1,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "threshold_quantiles": 41,
+  "enforce_pusht_contact_risk": true,
+  "scope": "Fresh frozen-policy development12/calibration24 initialfamilies,3prespecified windows each. Same causal nonWM H5 polynomial bank with unchanged3action suffix; nativeCPU LeWM and thirdpartyretrainednoprop DINO global patch metrics. No policy/WM/probe training, no heldout test outcomes, no repeated correction or latency efficacy claim. Future physics is evaluation only; actions/model scores fixed before physical branches. Independent audit required before calibration."
+}

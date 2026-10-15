@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "splits": ["development","calibration"],
+  "directions": ["lewm_low","lewm_high"],
+  "random_controls": ["random0","random1"],
+  "matching_unit": "Same state, normalized action radius and sign; require all four direction actions feasible as in original complete-cell comparison. Evaluate each direction against both random controls; no selection using object outcomes.",
+  "calipers": [0.1,0.2,0.5],
+  "primary_caliper": 0.2,
+  "amplitude_rule": "Absolute pair difference divided by max(pair values, numericfloor)<=caliper, for realized EEF translation RMS/max and fullSO3angular RMS/max separately. Numeric floors translation1e-7m androtation1e-5rad; zero-motion cases retained/labeled, not counted as informative motion.",
+  "translation_floor_m": 1e-7,
+  "rotation_floor_rad": 1e-5,
+  "frequency_rule": "Totalvariation<=caliper between normalized DCT-II power in [0,2.5),[2.5,5),[5,10),[10,infinity)Hz for worldXYZ displacement plus yaw_length_scale times fullrotationvector relative to nominal; includes DC and suffix, same500Hz window. This is coarse frequency matching, not equal full spectra.",
+  "informative_motion": "Either member translationRMS>1e-5m or rotationRMS>1e-4rad, reported separately without removing from primary support.",
+  "weighting": "Average matched candidate-pair outcomes within state, then equal state weighting with initialfamily bootstrap. State/family support and unmatched counts byphase reported for every caliper, including zero support.",
+  "scope": "Post-hoc exploratory matching on realized robot response (a post-intervention variable), not causal identification of WM object information or deployable predictor. No fulltrajectory equality, no test matching/tuning, no claim compute matched. Predeclare all calipers and report all rather than selecting a favorable result. Existing audited physical bank reused; no new executions."
+}

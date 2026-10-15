@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "methods": ["controller", "contact", "lewm_global"],
+  "max_actions": 300,
+  "smoke_actions": 40,
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "policy_device": "cuda:2",
+  "world_model_device": "cpu",
+  "rules_source": "artifacts/followup_v1/dinowm_policy_selection/rules.json",
+  "nominal_source": "artifacts/followup_v1/dinowm_policy_nominal",
+  "fresh_policy_check_steps": [16, 96, 192],
+  "scope": "F10 fixed-rule repeated-execution development/calibration diagnostic. Reuse audited36nominal policy families (24calibration+12development), original300actions/8action replanning, H5 polynomial correction+unchanged3action suffix, nativeCPU scores and frozen new-policy calibration rules. Compare controller/contact/LeWM; no DINO repeated-performance claim. Each policy sees own actual observations; reference nominal future never enters choice. Local evaluation follows execution; wholeepisode preservation uses same-seed nominal only afterward. No episode-risk calibration, new independent test, dynamics adaptation or actual delay claim. Preserve failed results; no percondition tuning."
+}

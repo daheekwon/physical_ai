@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "split": "development",
+  "states": 105,
+  "total_actions": 20,
+  "block_actions": 5,
+  "core_suffix_actions": 3,
+  "long_suffix_max_actions": 10,
+  "methods": ["controller_pusher", "vision_contact", "vision_adaptive", "lewm_global", "gaussian_action", "lipo_full_command", "groove_full_command"],
+  "conditions_source": "configs/followup_shift_evaluation.json",
+  "scope": "Joint stress test of repeated correction and the eight previously validated PushT physics/sensing conditions. Same105development states; fixed expert actions, self-observed correction every5actions for20actions plus original3to10suffix. Retain original nominal-calibrated verifier/filter settings, no new fit or independent final claim. Hold shift onset fixed at original root minus10actions throughout replay; never move onset as correction root advances. Same-condition unmodified reference defines cumulative preservation; each actual reached root also has localnominal/correctedH5+3 comparisons. Include strongGaussian/LiPo/GROOVE fullcommand controls with their extra boundaryfreedom explicit. Noise affects selector history only, notphysicaltruth. Selection inputs exclude changedphysicalparameters and futurecounterfactualoutcomes. Actual delivered action dtype matches originalexpert arrays; recompute applied norm. Report fixedrule transfer, not calibratedrisk guarantee or policyclosedloop/hardware adaptation."
+}

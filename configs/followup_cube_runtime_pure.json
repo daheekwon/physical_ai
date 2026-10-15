@@ -1,0 +1,12 @@
+{
+  "version":1,
+  "pipelines":{
+    "controller_no_wm":{"method":"controller_displacement","profiles":["nonwm_small","nonwm_medium","nonwm_full"]},
+    "contact_no_wm":{"method":"proprio_contact","profiles":["nonwm_small","nonwm_medium","nonwm_full"]},
+    "lewm_verifier_only":{"method":"lewm_global","profiles":["nonwm_small","nonwm_medium","nonwm_full"]},
+    "lewm_generator_and_verifier":{"method":"lewm_global","profiles":["wm_full"]},
+    "lewm_best_calibrated":{"method":"lewm_global","profiles":["nonwm_small","nonwm_medium","nonwm_full","wm_full"]}
+  },
+  "primary_baseline":"controller_no_wm",
+  "scope":"Supplement original all-profile budget analysis with explicitly pure non-WM baselines. Pipeline eligibility is locked before full runtime outcomes. Same calibration feasibility/p95 rule and fixed risk targets. Never select profile from development performance. Pure baselines must have zero encoder/Jacobian/finite prediction calls. Existing unrestricted controller-verifier budget result may include WM-generated proposals and is kept separately. No new physical executions or model fitting."
+}

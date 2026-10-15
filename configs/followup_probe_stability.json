@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "subset_seeds": [20261010,20261011,20261012],
+  "fractions": [0.25,0.5,1.0],
+  "fixed_subset_mlp_seed": 20261010,
+  "full_mlp_seeds": [20261010,20261011,20261012],
+  "representations": {
+    "pusht": ["lewm_frame","lewm_history","dino_projected_patch_mean","dino_projected_spatial_quadrants"],
+    "ogb-cube": ["lewm_frame","dino_projected_patch_mean"]
+  },
+  "targets": {"pusht":"raw","ogb-cube":"symmetry"},
+  "learners": ["ridge","mlp64","label_shuffle","mean"],
+  "scope": "Plan4.7B supervised readout robustness, frozen encoders/dynamics. Prespecified native-future-compatible features; LeWM spatial capture excluded because native prediction does not expose corresponding spatial output. Each subset seed has nested25/50/100% training families shared across representations. Ridge alpha selection on same development families/grid; MLP seed fixed for subset effects. Full deterministic ridge/controls fit once, MLP three initialization seeds. Existing exact-matching first-seed subset and full models reused with subset/model hashes. Repeated training subsets are correlated, not independent datasets; report training variation separately from evaluation-family intervals. No finaltest, no new representation winner chosen on calibration. Capture stage alone does not complete B; same models must undergo real/predicted intervention-effect evaluation."
+}

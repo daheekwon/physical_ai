@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "environment": "ogb-cube",
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "smoke_seeds": [340000, 340100],
+  "metrics": ["dino_patch_rms", "dino_patch_mean"],
+  "primary_metric": "dino_patch_rms",
+  "calibration_protocol": "Use existing Cube policy selection settings and 24 calibration families only; compare five verifiers on the identical audited138-state2698-candidate bank; retain original3 rules and fit DINO2 with same41quantile grid and empirical risk/active constraints. Technical smoke must not select hyperparameters.",
+  "scope": "Third-party retrained frozen no-proprioception DINO-WM on Cube nativeplan/causalH5 policy candidates. Existing24calibration and12development families; no independent final claim, no model training. Same images/history/actions and candidate physics; DINO receives only an explicit input allowlist. Preserve object position2mm/fullSO3rotation2deg at500Hz overH5+3; actualXYZjerk improvement10percent, same fixedgripper and expectedjerk ranking. No repeated/global preservation, shift/adaptation or latency claim. Source physical bank reused after hash verification; new model predictions and approval calibration only. Already-inspected64 final families must not be called a new independent test for this added comparison."
+}

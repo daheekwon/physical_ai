@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "repetitions": 3,
+  "profiles": {
+    "nonwm_small": {"bank":"non_wm_proposals", "radii":[0.025]},
+    "nonwm_medium": {"bank":"non_wm_proposals", "radii":[0.025,0.05,0.1]},
+    "nonwm_full": {"bank":"non_wm_proposals", "radii":[0.025,0.05,0.1,0.2,0.4]},
+    "wm_full": {"bank":"common", "radii":[0.025,0.05,0.1,0.2,0.4]}
+  },
+  "methods":["controller_displacement","proprio_contact","lewm_global"],
+  "budgets_seconds":[0.05,0.1,0.25,0.5,1.0,2.0,5.0],
+  "device":"cuda:2",
+  "scope":"Full recomputation from saved causal history: effective controller fit, polynomial candidate generation and optimization, image preprocessing/encoder when used, Jacobian only for WM-generated bank, finite prediction when LeWM verifier used, and selection. Loading checkpoint/history from disk and image acquisition excluded, as offline initialization. Synchronize GPU around measured pipeline. No cached predictor, Jacobian, response fit or candidate generation inside measured repeats. Candidate physical outcomes reused only after action/score/source equivalence checks. No oracle outcome input to runtime pipeline. No execution-delay injection here.",
+  "calibration":"Reuse separately frozen common/non-WM full-bank verifier rules. Reduced profiles require fresh calibration feasibility check, not new per-state tuning. For each method/budget choose a profile using calibration-only empirical all/contact risk <=0.1, active >=0.25, timing p95 <=budget, then highest U, gain, lower p95. Freeze these choices before evaluating development. Timing sharedGPU conditions recorded, not hardware lowerbound or guaranteed realtime deadline.",
+  "split":"All24 calibration families96states and all24development families96states; finaltest requires separate freeze after full validation. Smoke firststate of eachsplit, no performance conclusion. Twelvevariants perstate, threefresh repeats, uniform deterministic randomized order."
+}

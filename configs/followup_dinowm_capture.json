@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "splits": ["probe_train","development","calibration"],
+  "tasks": ["pusht","ogb-cube"],
+  "representations": ["patch_mean","spatial_quadrants","history_patch_mean"],
+  "batch_frames": 8,
+  "torch_threads": 2,
+  "scope": "Frozen third-party DINO-WM image features for the same probe families and physical labels as previous LeWM capture. PushT replay same initial simulator/data/actions/times and assert full physical labels exact. Cube reuse saved probe/current/future/history images and labels. 100/35/35 PushT families20labels each; Cube64train and24dev24cal families4phases2labels. No finaltest. No supervised fitting in collection. Mean384, quadrant4x384, history3x384. Native14x14 patchgrid; preprocessing/encoder pinned. CPUFP32; report capacity differences when comparing with LeWM. Readout selection and label controls require separate stage."
+}

@@ -1,0 +1,18 @@
+{
+  "version":1,
+  "development_seeds":[210000,210001,210002,210003],
+  "test_seeds":[213000,213001,213002,213003,213004,213005,213006,213007,213008,213009,213010,213011],
+  "methods":["nominal","controller_pusher","vision_contact","vision_adaptive","lewm_global","gaussian_action"],
+  "profiles":["zero","policy_only","full"],
+  "primary_profile":"full",
+  "max_actions":300,
+  "control_dt":0.1,
+  "delay_source":"Full audited calibration12seed72episode policy_refinement; nominal policy inference and render samples common across methods, each method's eligible refinement durations sampled separately. Development timing used only for explicitly marked implementation smoke, never final latency profile.",
+  "clock":"Empirical measured-duration replay into simulation physical clock, not this run's wall clock. Serial capture/plan/hold/execute8 model with no overlap; next request after previouschunk completes. Quantize delay upward to next0.1s tick. No claim optimal asynchronous pipeline or exact state-conditioned latency.",
+  "hold":"During pending computation hold the last absolute PD target, initially currentpusherposition. Compile hold(target-currentposition)/100, clip to common [-1,1]. Reissuing the last relative action is not a position hold.",
+  "dispatch":"Policy/refinement computed at requesttime from own actual history. Deliver stored relative commands unchanged at readytime; stale-context effect included. No oracle re-optimization at arrival. Fixed300physicalcontrolticks including hold; no extension to compensate delay, no success earlystop.",
+  "noise":"Common logical policy-call index k uses original seed expression with8*k in place of physicalrequesttime; zero profile reproduces original t=8*k. Same callindex shares policy/render delay draws across methods/profiles. Refinement draws method-specific and zero fornominal/ineligible.",
+  "references":"Primary object preservation versus sameprofile nominalpolicy; additionally compare allruns with zero-profile nominal to retain original fixedtime intention. Local counterfactual fromactualdispatchstate, afterexecution, onlycomplete8actioneligiblechunks. Task success and holdfraction separately.",
+  "profiles_interpretation":"zero idealized originalclock; policy_only charges acquisition+policy but treats refinement asfree diagnostic; full includes refinement. Originalpolicyrules unchanged, no newcalibration or modeltraining. Fourdevelopmentfamilies diagnostic; twelveindependentreservedtestseeds after implementationfreeze, no finaltuning.",
+  "scope":"F10 actual delay injection with common absolute-target hold. Measured-duration samples replayed, not sleep-induced realrobotexperiment. SharedGPU timing source and openloop pendingcommands explicitly bounded to this schedulingpolicy. Hardware/othermethods remain separate."
+}

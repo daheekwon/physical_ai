@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "seed": 20261014,
+  "methods": ["controller", "contact", "lewm_global", "dino_patch_rms", "dino_patch_mean"],
+  "device": "cpu",
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "repetitions": 3,
+  "warmup_per_method_per_environment": 1,
+  "budgets_seconds": [0.1, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 30.0],
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "action_reproduction_atol": 1e-9,
+  "scope": "Full fresh candidate generation, preprocessing, encoding, native prediction, scoring and selection from causal RGB/proprio buffers; all methods CPU with2 PyTorch and2 BLAS threads. Native DINO single-candidate FP32 and LeWM native CPU; no Jacobian in any method. Fixed common nonWM polynomial bank and existing calibrated verifier thresholds, no model/threshold retraining. Randomized method/repetition order within state; fixed warmup excluded. Excludes frame acquisition/rendering, disk IO, model initialization and physical evaluation. Shared host timing, not hardware-independent bound. Strict parent action match required before any existing dense physics reuse; actual CPU-score choices may differ from former GPU LeWM choices and are evaluated separately. No latency-injected physics and no new-family final test claimed."
+}

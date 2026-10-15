@@ -1,0 +1,37 @@
+"""Nominal-only Cube allowance calibration on audited same-candidate outcomes."""
+import json,sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+import numpy as np,pandas as pd
+from zj_wam.io import resolve,sha256,write_json
+from scripts.cube_adaptation_factorial_core import past_error
+from scripts.cube_adaptation_selection_core import select
+from scripts.output_replacement_core import physical
+BASE=resolve('artifacts/followup_v1');read=lambda p:json.loads(p.read_text())
+def main():
+    cfg=read(resolve('configs/followup_cube_adaptation_factorial.json'));sm=BASE/'cube_adaptation_smoke';smoke=read(sm/'raw_audit.json');assert smoke['actual_selector_calls']==48 and smoke['fullbank_exact_calls']==40;bank=BASE/'cube_policy_calibration_bank';ba=read(bank/'raw_audit.json');assert ba['states']==138 and ba['candidates']==2698;rule=next(x['rule'] for x in read(BASE/'cube_policy_selection/rules.json')['rules'] if x['method']==cfg['verifier']);manifest=read(bank/'manifest.json');paths=[bank/f'{seed}_{phase}_t{step:03d}.json' for seed,phases in manifest['phases'].items() if 340100<=int(seed)<340124 for phase,step in phases.items() if step is not None];assert len(paths)==90;out=BASE/'cube_adaptation_calibration';out.mkdir(exist_ok=True);files=[resolve(p) for p in ['configs/followup_cube_adaptation_factorial.json','scripts/cube_adaptation_factorial_core.py','scripts/cube_adaptation_selection_core.py','scripts/calibrate_followup_cube_adaptation.py','scripts/output_replacement_core.py']]+[bank/'manifest.json',bank/'raw_audit.json',BASE/'cube_policy_selection/rules.json',BASE/'cube_policy_selection/raw_audit.json',sm/'protocol.json',sm/'raw_audit.json']
+    for p in paths:files.extend([p,p.with_suffix('.npz')])
+    for p,h in {**read(sm/'protocol.json')['inputs'],**smoke['inputs'],**manifest['inputs']}.items():assert sha256(resolve(p))==h,p
+    protocol={'config':cfg,'base_rule':rule,'inputs':{str(p.relative_to(resolve('.'))):sha256(p) for p in files},'scope':'Nominal90states24families only. Reuse audited candidatephysical outcomes; calibrate acceptance/staging masks without charging this offline computation as actualselector latency. Future labels used only for calibration; no shifteddevelopment/final tuning.'}
+    if (out/'protocol.json').exists():assert read(out/'protocol.json')==protocol
+    else:write_json(out/'protocol.json',protocol)
+    specs=[('fixed','fixed',0.,None),('compute','compute',0.,None),('cheap_only','cheap_only',0.,None)]+[(f'{m}_a{a:g}',m,a,None) for a in cfg['alpha_grid'] for m in ['allowance','both']]+[(f'constant_r{r:g}','constant_shrink',0.,r) for r in cfg['constant_radius_grid']];rows=[];checks=0
+    for p in paths:
+        meta=read(p);raw=dict(np.load(p.with_suffix('.npz')));context={k[6:]:v for k,v in raw.items() if k.startswith('input_')};error,_,_,_=past_error(context);truth=physical('cube',raw);cost=raw['costs'];norm=raw['norm'];score=raw['proprio_contact_scores'];labels=raw['labels'];gain=(cost[0]-cost)/max(cost[0],1e-12);table=pd.DataFrame({'candidate':np.arange(len(cost)),'cost':cost,'norm':norm,'score':score,'gain':gain,'stage1':np.isin(labels[:,0],['nominal','past_pd_optimizer'])})
+        for label,mode,alpha,radius in specs:
+            d=select(cost,norm,score,labels,error,rule,cfg,mode,alpha,radius);r=.4/(1+alpha*min(error,10)) if mode in ['allowance','both'] else (radius if mode=='constant_shrink' else .4);eligible=table[(table.norm>1e-6)&(table.norm<=r+1e-6)&(table.score<=rule['tau'])&(table.gain>1e-8)] if rule['enabled'] else table.iloc[:0];first=eligible[eligible.stage1].sort_values(['cost','norm','candidate']);fi=int(first.iloc[0].candidate) if len(first) else 0;early=mode in ['compute','both'] and fi>0 and gain[fi]>=.1 and gain[fi]>=.9*table[table.stage1].gain.max();allowed=eligible[eligible.stage1] if mode=='cheap_only' or early else eligible;ranked=allowed.sort_values(['cost','norm','candidate']);expected=int(ranked.iloc[0].candidate) if len(ranked) else 0;assert expected==d['candidate'] and bool(early)==d['early_stop'] and d['radius']==r;checks+=1;j=d['candidate'];active=bool(norm[j]>1e-6);E=float(truth['dense_full'][j]);actual=float(truth['jerk_gain'][j]);rows.append({'state_id':p.stem,'initial_pose_family':meta['seed'],'phase':meta['phase'],'variant':label,'mode':mode,'alpha':alpha,'constant_radius':radius,'candidate':j,'active':active,'violation':active and E>1,'joint':active and E<=1 and actual>=.1,'jerk_gain':actual,'object_error':E,'past_error':error,**{k:v for k,v in d.items() if k!='candidate'}})
+    f=pd.DataFrame(rows);assert len(f)==1620 and f.initial_pose_family.nunique()==24;summary=[]
+    for variant,g in f.groupby('variant',sort=False):
+        active=g[g.active];risk=float(active.violation.mean()) if len(active) else None;af=float(g.active.mean());summary.append({'variant':variant,'active_fraction':af,'risk':risk,'joint':float(g.joint.mean()),'jerk_gain':float(g.jerk_gain.mean()),'early_stop_fraction':float(g.early_stop.mean()),'valid':bool(af>=.25 and risk is not None and risk<=.1)})
+    by={x['variant']:x for x in summary};best=None;value=None
+    for alpha in cfg['alpha_grid']:
+        pair=[by[f'{m}_a{alpha:g}'] for m in ['allowance','both']];v=(np.mean([x['joint'] for x in pair]),np.mean([x['jerk_gain'] for x in pair]))
+        if all(x['valid'] for x in pair) and (value is None or v>value):best=alpha;value=v
+    radius=None;rv=None
+    for r in cfg['constant_radius_grid']:
+        x=by[f'constant_r{r:g}'];v=(x['joint'],x['jerk_gain'])
+        if x['valid'] and (rv is None or v>rv):radius=r;rv=v
+    # Independent tabular ordering checks deterministic ties and the same gates.
+    pairs=pd.DataFrame([{'alpha':alpha,'valid':all(by[f'{m}_a{alpha:g}']['valid'] for m in ['allowance','both']),'U':np.mean([by[f'{m}_a{alpha:g}']['joint'] for m in ['allowance','both']]),'J':np.mean([by[f'{m}_a{alpha:g}']['jerk_gain'] for m in ['allowance','both']])} for alpha in cfg['alpha_grid']]);v=pairs[pairs.valid].sort_values(['U','J','alpha'],ascending=[False,False,True]);assert best==(float(v.iloc[0].alpha) if len(v) else None)
+    settings={'qualified':best is not None,'alpha':best,'constant_radius_qualified':radius is not None,'constant_radius':radius,'base_rule':rule,'nominal_calibration_states':90,'nominal_calibration_families':24,'condition_tuning':False,'protocol_sha256':sha256(out/'protocol.json'),'scope':'Allowances calibrated by actualU under empiricalrisk/coverage constraints onnominal only. Alpha0 means no allowanceadaptation justified; do not call it adaptivebenefit. Computeearlystop remains fixedprespecified rule; no shiftedlabels used.'};write_json(out/'settings.json',settings);f.to_csv(out/'trials.csv',index=False);write_json(out/'analysis.json',{'states':90,'families':24,'trials':len(f),'summary':summary,'settings':settings});write_json(out/'raw_audit.json',{'states':90,'families':24,'trials':len(f),'independent_choice_checks':checks,'protocol_sha256':sha256(out/'protocol.json'),'analysis_sha256':sha256(out/'analysis.json'),'settings_sha256':sha256(out/'settings.json'),'source_sha256':sha256(Path(__file__)),'scope':'Every offline selection and earlystop crosschecked using independently filtered/sorted table; shared-alpha jointgate independently checked. Physical outcomes reusedfromfullyauditednominalbank; no newphysics or actual costmeasurement.'});print('CALIBRATED CUBE ADAPTATION',len(f),settings,flush=True)
+if __name__=='__main__':main()

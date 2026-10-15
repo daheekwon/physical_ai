@@ -1,0 +1,36 @@
+"""Reconcile the existing physical-pose observation-refresh experiment with F10."""
+import hashlib,json,sys,time
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+import numpy as np,pandas as pd
+from zj_wam.io import resolve,sha256,write_json
+from scripts.audit_followup_dinowm_policy_final import interval
+BASE=resolve('artifacts/followup_v1');OUT=BASE/'repeated_refinement';read=lambda p:json.loads(p.read_text())
+def main():
+    paths=sorted(p for p in OUT.glob('*.json') if p.name.startswith(('development_','calibration_')));assert len(paths)==210;inputs={};chains=0;blocks=0;f=pd.read_csv(OUT/'evaluation.csv');analysis=read(OUT/'analysis.json');selected=f[f.method.isin(['repeat5_predicted_pose','repeat5_observed_pose'])].copy();assert len(selected)==420
+    for p in paths:
+        m=read(p);assert m['source_sha256']==sha256(resolve('scripts/run_followup_repeated_refinement.py')) and m['selector_sha256']==sha256(resolve('zj_wam/repeated_refinement.py'));a=m['decisions']['repeat5_predicted_pose'];b=m['decisions']['repeat5_observed_pose'];assert len(a)==len(b)==4 and [x['offset'] for x in a]==[0,5,10,15] and [x['offset'] for x in b]==[0,5,10,15]
+        for x,y in zip(a[1:],a[:-1]):np.testing.assert_array_equal(x['observed_pose'],y['predicted_endpoint_pose']);chains+=1
+        for key in ['selected_index','observed_pose','predicted_endpoint_pose','norm','score','candidate_count']:assert a[0][key]==b[0][key],(p,key)
+        raw=dict(np.load(p.with_suffix('.npz')));np.testing.assert_array_equal(raw['repeat5_predicted_pose_actions'][:5],raw['repeat5_observed_pose_actions'][:5]);blocks+=8
+        for ext in ['.json','.npz','.csv']:q=p.with_suffix(ext);inputs[str(q.relative_to(resolve('.')))]=sha256(q)
+    paired=[]
+    for split in ['calibration','development']:
+        pred=selected[(selected.split==split)&(selected.method=='repeat5_predicted_pose')].set_index('state_id');obs=selected[(selected.split==split)&(selected.method=='repeat5_observed_pose')].set_index('state_id').loc[pred.index];assert len(pred)==105;v=obs.reset_index()
+        for metric in ['joint','long_joint','jerk_gain','nested_long_error']:
+            v['delta']=obs[metric].to_numpy(float)-pred[metric].to_numpy(float);result=interval(v,'delta');stored=next(x for x in analysis['paired'] if x['split']==split and x['method']=='repeat5_observed_pose' and x['baseline']=='repeat5_predicted_pose')[metric];np.testing.assert_allclose(result['mean'],stored['mean'],atol=1e-12,rtol=0);np.testing.assert_allclose(result['ci95'],stored['ci95'],atol=1e-12,rtol=0);assert result['families']==stored['families'];paired.append({'split':split,'metric':metric,**result})
+    for p in [OUT/'raw_audit.json',OUT/'analysis.json',OUT/'evaluation.csv',resolve('configs/followup_repeated_refinement.json'),resolve('scripts/run_followup_repeated_refinement.py'),resolve('zj_wam/repeated_refinement.py'),resolve('configs/followup_relinearization.json'),resolve('scripts/audit_followup_dinowm_policy_final.py')]:inputs[str(p.relative_to(resolve('.')))]=sha256(p)
+    write_json(OUT/'observation_refresh_scope_audit.json',{'states':210,'selected_method_rows':420,'decision_blocks':blocks,'predicted_pose_history_links_checked':chains,'identical_initial_choices_and_actions':210,'paired':paired,'inputs':inputs,'source_sha256':sha256(Path(__file__)),'scope':'Existing contact-response-model predicted-pose vs observed-pose repeated20action experiment satisfies generic F10 observation-refresh comparison. Separate LeWM basis-refresh arms all use actual observations, and do not supply a native latent-history refresh comparison. No new physics or candidate optimization performed. Prior raw_audit independently recomputed dense stored physical/coverage/jerk metrics without fresh simulation; this added audit checks sourceidentity, loggedcausalposechain, identical initialchoices/actions and pairedfamilyCI only.'})
+    gap=BASE/'protocol/f10_observation_gap_audit.json';old=read(gap);archive=gap.with_name('f10_observation_gap_audit_superseded.json')
+    if not archive.exists():write_json(archive,old)
+    corrected={'verified_unix':time.time(),'supersedes':str(archive.relative_to(resolve('.'))),'reason':'Previous focused audit only inspected LeWM Jacobian refresh and missed already executed contact-model predicted/observed pose arms. General F10 observation-refresh requirement is covered; nativeLeWMlatent extension is optional additional diagnosis, not missing generic experiment.','evidence':str((OUT/'observation_refresh_scope_audit.json').relative_to(resolve('.'))),'evidence_sha256':sha256(OUT/'observation_refresh_scope_audit.json'),'judgment':'generic_response_model_observation_refresh_complete_with_stated_audit_scope','remaining':'Cube adaptation and ongoing repeated/final/cost experiments remain; this correction does not claim allF10/F11complete.'};write_json(gap,corrected)
+    lines=['<!-- BEGIN OBSERVATION REFRESH SCOPE CORRECTION -->','### 관측 갱신 비교의 완료 범위 정정','',
+    '완료 항목을 다시 확인한 결과, **접촉 반응 모델의 predicted pose와 observed pose 반복 비교는 이미210개 상태에서 수행됐다.** LeWM Jacobian 재선형화만 확인하며 일반 관측 갱신 대조 전체를 미완료로 표시했던 판단은 잘못이었다. 기존 자료를 재검토했으며 중복 물리 실험을 추가하지 않았다.','',
+    '두 조건은20개 action 동안 네 번의 H5 correction을 수행한다. Predicted-pose 조건은 첫 관측 이후 선택한 행동의 예측 endpoint pose를 다음 물체 상태로 넘기고, observed-pose 조건은 새 이미지의 pose 추정치를 사용한다. 두 조건 모두 실제 robot proprioception을 이용한다. 210개 상태의 첫 후보 선택·행동이 동일함과630개 예측 pose 전달 연결을 확인하고 paired family 구간을 다시 계산했다.','',
+    'Development에서 관측 갱신의 U는13.33%, 예측 pose 유지의 U는12.38%였다. 차이는+0.95%p, family95% 구간[0.00,2.86]%p다. 두 조건의 누적 위반율은 각각82.86%와85.71%였다. 이 설정에서 관측 갱신만으로 누적 보존 문제가 해결되었다고 볼 수 없다. Calibration의 U 차이는0이었다.','',
+    '이것은 **간단한 접촉 모델의 물체 상태 갱신** 비교다. LeWM native latent를 예측으로 이어가는 조건과 실제 encoded history로 갱신하는 조건의 반복 smoothing 비교까지 수행한 것은 아니다. 별도의 LeWM 긴-horizon 예측 진단과 Jacobian 갱신 실험도 그와 구분한다.','',
+    '기존 원시 감사는 저장된 전체 물리 trace의 pose·coverage·jerk를 재계산했으며 새 물리 재실행은 하지 않았다. 이번 추가 감사도 입력 전달 사슬·동일 초기 선택·통계와 코드 일치 확인에 한정된다. [범위 재검증](../artifacts/followup_v1/repeated_refinement/observation_refresh_scope_audit.json), [원래 전체 분석](../artifacts/followup_v1/repeated_refinement/analysis.json), [정정 기록](../artifacts/followup_v1/protocol/f10_observation_gap_audit.json).','<!-- END OBSERVATION REFRESH SCOPE CORRECTION -->'];section='\n'.join(lines);doc=resolve('docs/ZJ_WAM_FOLLOWUP_RESULTS.md');s=doc.read_text();begin=lines[0];end=lines[-1]
+    if begin in s:i=s.index(begin);j=s.index(end)+len(end);s=s[:i]+section+s[j:]
+    else:i=s.index('<!-- BEGIN POLICY FINAL TEST -->');s=s[:i]+section+'\n\n'+s[i:]
+    s=s.replace('실제 관측 갱신과 imagined history의 대조, 조건 적응 및 남은 task/실물 확장까지 완료했다는 뜻은 아니다.','관측 갱신 비교는 접촉 모델에서 이미 수행했으며 아래 범위 정정에 근거를 남겼다. 조건 적응 및 남은 task/실물 확장까지 모두 완료했다는 뜻은 아니다.');doc.write_text(s);write_json(OUT/'observation_refresh_scope_report.json',{'source_sha256':sha256(Path(__file__)),'inputs':{'observation_refresh_scope_audit.json':sha256(OUT/'observation_refresh_scope_audit.json'),'analysis.json':sha256(OUT/'analysis.json'),'raw_audit.json':sha256(OUT/'raw_audit.json')},'section_sha256':hashlib.sha256(section.encode()).hexdigest(),'unix':time.time()});print('RECONCILED OBSERVATION REFRESH',len(paths),chains,blocks,flush=True)
+if __name__=='__main__':main()

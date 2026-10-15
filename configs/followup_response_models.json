@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "pusher_radius": 15.0,
+  "object_cog": [0.0, 45.0],
+  "gyration_squared": 1500.0,
+  "tangential_gain": 0.2,
+  "friction_cap": 0.5,
+  "local_ridge_fraction": 0.01,
+  "local_noise_floor_px": 0.1,
+  "adaptive_ridge": 1.0,
+  "adaptive_gain_bounds": [0.25, 3.0],
+  "vision_colors": [[119, 136, 153], [143, 163, 184]],
+  "vision_color_tolerance": 18.0,
+  "vision_minimum_pixels": 500,
+  "vision_expected_area": 6300.0,
+  "vision_centroid_local": [0.0, 40.714285714285715],
+  "state_tier": "Current simulator object pose and past 0.3s pose observations; privileged physical-state diagnostic",
+  "vision_tier": "Same three RGB frames as LeWM, known PushT shape/colors, and robot proprioception history; no future object state",
+  "note": "Common fixed geometry defaults. Online gains are two phenomenological response coefficients estimated from observed past only, not identified mass or friction. Predicted position/rotation scores omit explicit coverage and are calibrated against full executed E_obj including coverage."
+}

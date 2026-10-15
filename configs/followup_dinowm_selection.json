@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "methods": ["controller", "contact", "lewm_global", "dino_patch_rms", "dino_patch_mean"],
+  "maximum_radius": 0.2,
+  "threshold_quantiles": 41,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "minimum_norm": 0.000001,
+  "minimum_predicted_gain": 0.00000001,
+  "meaningful_gain": 0.1,
+  "enforce_pusht_contact_risk": true,
+  "scope": "F8/F9 first same-candidate verifier comparison on existing development/calibration PushT210/Cube192. Primary bank contains only controller optimizer/random candidates; Cube LeWM-low/high candidates excluded. Common cap .2 in each environment's declared radius convention, not matched cross-task physical units. Controller, contact and nativeLeWM compared with two prespecified nativeDINO token distances; no supervised object readout. DINO is separately verified thirdpartyretrain, not originalbaseline. Each method independently calibrates41quantile thresholds plus0/1 at same empiricalrisk/coverage targets, with expectedcontrollerjerk ranking fixed. All evaluated candidates same withinstate; no DINO generator or fullinference cost measurement in this cached study. Cube contact usesproprioception and knowncommands; PushT contact usescurrentRGB geometry androbotproprioception, explicitly different input tiers. Cube expectedcost includesXYZ/yaw while actualprimaryjerk isEEFtranslation; retain this parent limitation. Development is already exposed exploratory data, calibration resubstitution. New-familyfinal/cost/repeated/adaptation remain necessary."
+}

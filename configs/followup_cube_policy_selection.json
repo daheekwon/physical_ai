@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "methods": [
+    "controller_displacement",
+    "proprio_contact",
+    "lewm_global"
+  ],
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "minimum_norm": 1e-06,
+  "minimum_predicted_gain": 1e-08,
+  "meaningful_gain": 0.1,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "threshold_quantiles": 41,
+  "enforce_pusht_contact_risk": false,
+  "scope": "Calibrate only24new Cube policy families; assess12 previously inspected development families. Identical candidate bank, empirical selected risk<=10percent and active states>=25percent; maximize expected useful rate then expected mean gain. Missing nominal phases explicitly reported, no task-failure filtering. Rule transfer diagnostic uses old expert rules. Final64reservedfamilies untouched; no repeated/global preservation or guaranteed safety claim."
+}

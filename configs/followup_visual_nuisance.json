@@ -1,0 +1,14 @@
+{
+  "version":1,
+  "families_per_split":12,
+  "splits":["development","calibration"],
+  "candidate_methods":["optimizer_executed","random_0_sign-1"],
+  "representations":["projected_cls","encoder_cls","spatial_quadrants"],
+  "readouts":["ridge","mlp64"],
+  "appearances":["clean","background_tint","rgb_noise_5","rgb_noise_15"],
+  "background_tint":[225,235,245],
+  "sampling":"Seeded12families per split, one source state per family; candidate identity fixed by generator and allfour radii, never by physical outcomes. Original endpoint images and physical labels reused. No test access.",
+  "noise":"One fixed spatial Gaussian noise field shared by nominal/modified endpoint images within each state and amplitude, so appearance is held constant in the physical-pair contrast. Independent perframe noise and future dynamics are outside this diagnostic.",
+  "contrasts":"Clean physical pair, corrupted physical pair, nominal appearance-only pair, and combined physical+appearance change relative to clean nominal. A transformed image never changes the saved physical label. No retraining or predictor activation intervention.",
+  "scope":"F4 representation/readout diagnostic subset. Synthetic observation shifts only; not physical counterfactual dynamics or deployment preservation evidence. Any changed representation needs later F8/F9 selection evaluation. Background mask uses exactwhite rendered pixels; known-renderer diagnostic."
+}

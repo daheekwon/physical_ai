@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "resolution_quantile": 0.9,
+  "position_direction_cosine": 0.5,
+  "rotation_direction_cosine": 0.5,
+  "wrong_action_norm_ratio": [0.8,1.25],
+  "wrong_action_max_cosine": 0.0,
+  "scope": "Plan4.7B F4/F5 with all180 audited repeated probes. Same F1H5 PushT and Cube physical candidate banks across models and repetitions. Real versus predicted effect, zero/persistence/opposed norm-matched wrong-action controls, separate calibration90th real-error resolution per frozen probe, all cases retained in physical stats. Subset and initialization variation descriptive and distinct from evaluation-family uncertainty. No finaltest, no refitting or correction selection. PushT CPU LeWM commonbank features numerically validated against original GPU outputs; do not join old225candidate effect files by name."
+}

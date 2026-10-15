@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "methods": ["controller_pusher","vision_contact","vision_adaptive","lewm_global","gaussian_action"],
+  "candidate_profiles": {"small":[0.1],"medium":[0.1,0.2],"full":[0.05,0.1,0.2,0.4]},
+  "repetitions": 3,
+  "warmup_calls_per_variant": 1,
+  "latency_budgets_seconds": [0.01,0.025,0.05,0.1,0.2,0.5],
+  "latency_quantile": 0.95,
+  "scope": "From fresh224RGB render/current robot proprioception plus availablepastbuffer to delivered H5+3suffix action, includes imagepreprocessing,poseestimation/encoder,candidategeneration,modelprediction,scoringandselection. Stateprefixreplay,physics outcomeevaluation,modelinitialload and nominalexpertgeneration excluded and stated. Samehost/device/threadcount; randomizedvariantorder,3uninstrumentedrepetitions, separate synchronized stageprofile. GPU/host shared with live studies; recordresourceprocesses, no isolatedhardware or hardrealtime guarantee. Sharedp95costcaps choose candidateprofile on calibration only; developmentmeasuresactualcost anddeadlineexceedance, no simulatedactuationdelay or latencyinjectedclosedloop claim. Strong geometric/nonlinear optimizers require separate fullpipelinecost comparison."
+}

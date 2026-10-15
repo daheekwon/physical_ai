@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "smoke_seed": 340000,
+  "methods": [
+    "controller_displacement",
+    "proprio_contact",
+    "lewm_global"
+  ],
+  "radii": [
+    0.025,
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "scope": "Common all-candidate dense physical bank after material-change warmup on12 previously inspected Cube development families,48phase roots,7conditions. Current-observation compiledH5+3 commands, known privileged initialplan, fixedgripper, same nonWM polynomial generator and expectedXYZjerk ranking. Futurephysics only evaluation; full actions/model scores persisted beforebranch. No threshold tuning onshifted data, no allowance/compute factorial or repeatedglobal claim yet. Sham-forward ismatchedmaterialchangebaseline; nullconditions retained. Later nominal-only calibrated rules may be applied unchanged."
+}

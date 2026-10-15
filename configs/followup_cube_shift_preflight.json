@@ -1,0 +1,17 @@
+{
+ "version": 1,
+ "conditions": [
+  {"name":"nominal","mass_factor":1.0,"friction_factor":1.0,"forward":false},
+  {"name":"sham_forward","mass_factor":1.0,"friction_factor":1.0,"forward":true},
+  {"name":"mass_half","mass_factor":0.5,"friction_factor":1.0,"forward":true},
+  {"name":"mass_double","mass_factor":2.0,"friction_factor":1.0,"forward":true},
+  {"name":"friction_half","mass_factor":1.0,"friction_factor":0.5,"forward":true},
+  {"name":"friction_double","mass_factor":1.0,"friction_factor":2.0,"forward":true},
+  {"name":"mass_double_friction_half","mass_factor":2.0,"friction_factor":0.5,"forward":true}
+ ],
+ "repeats": 2,
+ "minimum_position_effect_m": 0.000001,
+ "minimum_rotation_effect_rad": 0.00001,
+ "sham_multiplier": 10.0,
+ "scope": "F10/F11 Cube parameter-change validity preflight on existing12developmentfamilies x4phase roots; original8nominal controls, no smoothing selection or adaptation. Abrupt change at current root after unchanged prior history. Object body mass and all3principal inertias scale together; only object's sliding geom friction changes, other bodies/material coefficients fixed. Recompute model constants on scratch data, restore complete root data, then mj_forward in changed/sham branches without advancing time. Original nominal must reproduce audited parent trace; sham-forward and duplicate branches expose numerical/cache effects. Effective condition requires object displacement or fullSO3 angle greater than both declared numerical floor and10x sham difference. Null conditions retained, not adaptation evidence."
+}

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "tasks": ["pusht", "ogb-cube"],
+  "splits": ["development", "calibration"],
+  "source_banks": {"pusht": "f1 H5", "ogb-cube": "cube native H5"},
+  "source_states": {"pusht": 210, "ogb-cube": 192},
+  "device": "cpu",
+  "precision": "fp32",
+  "torch_threads": 2,
+  "image_batch_size": 8,
+  "scope": "All existing development/calibration states, all candidates including nominal, original physical outcomes reused only after source hashes and independent physical E checks. Retain full predicted/actual/history patch tokens. Frozen separately retrained DINO no-proprio; no new physics or finaltest. Same original action semantics, H5 endpoint prediction and dense H5+3 physical preservation. No tuning of readouts here. Source banks contain LeWM-generated directions; comparator verifier alone is not necessarily a model-free whole pipeline.",
+  "next_analysis": "Frozen readouts: real endpoint effect resolution then predicted effect propagation, zero effect and equal-norm wrong-candidate controls where supported. Global-token RMS and supervised object metrics separately calibrated on calibration families, evaluated descriptively on development; newly collected untouched families required for subsequent confirmatory test. C/U/R definitions and thresholds from original task protocols. Native endpoint is not dense trajectory prediction."
+}

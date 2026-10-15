@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "pairs": [["lewm_global", "vision_contact"], ["lewm_object", "vision_contact"]],
+  "score": "max(score_left/frozen_left_tau, score_right/frozen_right_tau)",
+  "calibration": "Same 41 quantiles and four radii as individual selectors. Fixed ratio of component scales; no two-dimensional threshold search. Calibration states only.",
+  "diagnostic": "Cross-tabulate approvals from already frozen individual rules on the identical f1 candidate bank. Future physical outcomes label errors only and never enter selection.",
+  "scope": "Development/calibration, fixed common polynomial bank. Existing supervised readout and known-shape visual priors remain distinct costs. No final test access."
+}

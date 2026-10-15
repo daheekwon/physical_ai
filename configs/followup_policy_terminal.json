@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "development_seeds": [210000,210001,210002,210003,210004,210005,210006,210007,210008,210009,210010,210011],
+  "correction_step": 16,
+  "horizons": [5,8],
+  "chunk_actions": 8,
+  "max_actions": 300,
+  "families": ["quintic","quintic_terminal","spline","spline_terminal"],
+  "relative_radii": [0.05,0.1,0.2,0.4],
+  "terminal_tolerance": 0.001,
+  "active_threshold": 0.000001,
+  "jerk_gain_threshold": 0.1,
+  "scope": "Development-only finite-candidate oracle diagnosis; no deployable selection and no finaltest. Same initial states and first nominal policy chunk at t16. Optimize known current8action chunk only: H5 plus3known suffix vs H8 plus0. Preserve original future relative commands to300; no own-observation policy replanning. Terminal constraint matches actual pusher q/v at t+H, not object state. No future object state or future policy commands in optimizer. Both horizons share8action local evaluation. H comparison changes family dimension and correction duration, not isolated causal horizon effect.",
+  "preservation": "Dense100Hz same-time object position2px/rotation2deg and coverage loss0.02 at every control timestamp, for local8actions and full300actions. Full criterion includes local criterion. Same reference nominal-policy trace; local jerk uses3pastactions+8current; full jerk uses initialpusher+all300actions. Fourradius opportunity is oracle only, report 12family uncertainty not384independent trials."
+}

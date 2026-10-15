@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "date": "2026-10-12",
+  "seeds": [210000,210001,210002,210003,210004,210005,210006,210007,210008,210009,210010,210011],
+  "source": "artifacts/followup_v1/policy_refinement/development",
+  "output": "artifacts/followup_v1/sequence_oracle",
+  "start": 16,
+  "stride": 8,
+  "block": 5,
+  "actions": 300,
+  "relative_radius": 0.4,
+  "greedy_scales": [0.1,0.25,0.5,1.0],
+  "joint_population": 24,
+  "joint_generations": 16,
+  "random_seed": 20261012,
+  "position_tolerance": 2.0,
+  "rotation_tolerance": 0.03490658503988659,
+  "coverage_tolerance": 0.02,
+  "jerk_gain_threshold": 0.1,
+  "scope": "CPU-only privileged finite-search feasibility diagnosis on 12 reused development families. Jointly alter 35 quintic H5 corrections within fixed 300-action nominal policy commands, preserving three unmodified commands per chunk. No new policy inference, no own-observation policy replanning, no WM, no deployment claim, no independent test. Full 30-second same-time object pose at 100Hz and coverage at each control time. Actual pusher jerk includes episode initial position and all 3000 physics samples. Search failure is not proof of infeasibility. Greedy and joint search have different budgets; their difference is not a fair algorithm superiority claim. Other previously suspended experiments remain suspended."
+}

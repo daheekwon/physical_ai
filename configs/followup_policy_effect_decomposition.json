@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "development_seeds": [210000,210001,210002,210003],
+  "methods": ["controller_pusher","vision_contact","vision_adaptive","lewm_global","gaussian_action"],
+  "max_actions": 300,
+  "selection": "First four prespecified development seeds, all five methods, before new branch outcomes. Exploratory four-family diagnosis, not a final comparison or powered method ranking.",
+  "arms": {
+    "a_nominal": "Replay saved no-correction nominal relative commands; verify complete physical trace against original nominal-policy run.",
+    "b_first_fixed": "Replay nominal relative commands except the first originally selected active eight-action chunk, then use the saved nominal future commands. Counterfactual offline diagnostic only.",
+    "c_first_replan": "Identical execution through first selected active chunk, then frozen policy on own two-frame observations, no further correction. Same per-call noise seeds and eight-action timing.",
+    "d_repeated": "Previously audited full repeated-correction policy run, reused unchanged."
+  },
+  "comparisons": "A-B residual effect under fixed subsequent relative commands; B-C subsequent policy reaction; C-D additional correction regime including subsequent reaction interactions. Differences are not additive independent causal contributions.",
+  "metrics": "Same full300action global100Hz position2px/rotation2deg and10Hz coverage-loss0.02, executedpusherjerk, first violation, end object velocities, checkpoint errors at firstchunkend, +8,+16 and episodeend. Task success separate.",
+  "scope": "First correction taken from existing causal selection, never selected by new physical outcome. Fixed nominal future commands only supplied to offline B diagnostic; not a deployable policy. No model/recalibration updates. No actuation delay injection.",
+  "scheduling": "CPU open-loop replay first; GPU replanning begins only after locked PushT runtime_strong.done to avoid adding workload during timing."
+}

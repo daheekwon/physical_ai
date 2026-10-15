@@ -1,0 +1,12 @@
+{
+  "version":1,
+  "horizon":5,
+  "original_suffix":3,
+  "total_actions":23,
+  "splits":["calibration","development"],
+  "families":["quintic_full","quintic_full_terminal","interior_values","interior_values_terminal","cubic_spline","cubic_spline_terminal"],
+  "relative_radii":[0.05,0.1,0.2,0.4],
+  "scope":"Developmental physical diagnostic of terminal pusher position/velocity constraints and residual object drift. Reuse exact old family_ablation H5 polynomial coefficients/actions and solver logic; no new candidate fitting to long-term object outcomes. Recompute original controller solution to recover original action dtype, then verify all first8actions physics against oldraw before extending fixed original relative commands to23actions. No newpolicy feedback or WM calls. Do not use locked finaltest families or retune deployed rules.",
+  "metrics":"Original short H5+3 objectE/jerk retained. Long nestedE=max(shortE,long denseE including coverage at5 and23). Report longpreservation conditional on original active/shortpreserved/shortjerkgain>=0.1, plus separately actual entire23action jerk reduction. Endpusher q/v at5,post5pusher path, objectq/v at5/8/23, firstviolation. Candidate-level state-equal and family uncertainty; finite4radius oracle diagnostic only.",
+  "interpretation":"Terminal constraints reduce free dimensions and may reduce correction size/jerk opportunity. Quintic terminal0D is explicit nominal control, not useful smoothing. Pusher terminal matching does not guarantee matching object state or subsequent task. Same relative commands after correction are not generally identical robotpath unless actualpusher terminal state also agrees. No claim physical impossibility from finitebank failure."
+}

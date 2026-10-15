@@ -1,0 +1,20 @@
+{
+ "version": 1,
+ "test_seeds": {"start": 350200, "count": 64},
+ "smoke_seed": 350100,
+ "max_actions": 300,
+ "matched_chunk_control_steps": [16,96,192],
+ "methods": ["controller","contact","lewm_global","dino_patch_rms","dino_patch_mean"],
+ "primary_method": "dino_patch_rms",
+ "primary_baseline": "lewm_global",
+ "primary_metric": "joint",
+ "practical_U_difference": 0.1,
+ "target_risk": 0.1,
+ "minimum_active_fraction": 0.25,
+ "meaningful_gain": 0.1,
+ "position_tolerance_px": 2.0,
+ "rotation_tolerance_deg": 2.0,
+ "coverage_loss_tolerance": 0.02,
+ "family_bootstrap_resamples": 2000,
+ "scope": "Independent downstream policy-initial-family single-correction evaluation at three fixed windows. Full36family calibration/development completed first. Same55candidate nonWM H5 family and nativeCPU score/expectedjerk selection, suffix3unchanged. Freeze rules before any test policy rollout. Primary DINOpatchRMS minus LeWM; LeWM-controller/contact-controller/DINOmean-LeWM secondary exploratory. Not repeated policy correction, condition adaptation, actual latency, hardware or new expert population. All64prespecified families included regardless nominaltask success. Method efficacy requires later fully audited correction branches; nominal stage alone is interface evidence."
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "warmup_actions": 10,
+  "maximum_fit_physics_steps": 250,
+  "future_actions": 8,
+  "condition_source": "configs/followup_cube_shift_preflight.json",
+  "calibration_reference_condition": "sham_forward",
+  "scope": "Cube adaptation input preparation on existing12developmentfamilies/48policy-source phase roots. Apply each audited condition10actions before correction root, then replay identical original actions through warmup to obtain changed physical/image/action history. Record old prechange and new postchange EEF/known-target fit histories with equal perstate sample counts; all models later use only past robot signals. Record native images at root-10,-5,root and actualpast10actions. Save future nominal8only after causal context is fixed for later evaluation. No correction/modelselection/allowancecalibration/adaptation effectiveness or newfinal claim. Nominal no-forward is reproduction fixture; sham_forward is matched baseline for materialchange comparisons. Original source phases remain fixed even if changes alter contact timing.",
+  "render_statistics": "Preserve original XML-overridden model.stat center/extent/meansize after mj_setConst. The latter recomputes visual scale even in no-op conditions; physical meanmass/meaninertia remain recomputed. Exact nominal RGB fixture retained."
+}

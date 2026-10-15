@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "seed": 20261010,
+  "tasks": ["pusht","ogb-cube"],
+  "splits": ["probe_train","development","calibration"],
+  "dino_representations": ["patch_mean","spatial_quadrants","history_patch_mean"],
+  "projection": {"input_channels":384,"output_channels":192,"seed":20261010,"kind":"Fixed QR-orthonormal Gaussian channel projection, same matrix for all quadrants/history frames; no data or labels used"},
+  "alphas": {"pusht":[0.1,1.0,10.0,100.0,1000.0],"ogb-cube":[0.01,0.1,1.0,10.0,100.0]},
+  "models": ["ridge","label_shuffle","mean","mlp64"],
+  "selection": "Separate alpha for each representation and target type, minimizing development mean position/tolerance + rotation/tolerance. PushT rotation periodic; Cube raw and cube-symmetry canonical targets both fitted, corresponding error used in development selection. No calibration labels used for selection. Report calibration for all prespecified readouts, not a newly chosen calibration winner.",
+  "scope": "Supervised diagnostic readouts on frozen third-party DINO features and refitted LeWM controls using same records/labels/scalers/learner recipes. DINO native feature widths384/1536/1152 versus fixed projected192/768/576. LeWM PushT projected/spatial/history192/768/576; Cube frame/history192/576. Float64 probe fit/inference for both. Worldmodel weights unchanged; extra labels/probe learning explicit. No finaltest. Label-shuffle and constant controls retained. MLP fixed64tanh; PushT400iterations batch128 noearlystop, Cube500iterations batch64 earlystop perpriorrecipe. Report convergence warnings, not presumed successful learning."
+}

@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "scope": "Frozen PushT expert final evaluation; separate from policy/Cube/model-extension completion. Existing15downstream-unexposed initialstate families/45states; upstream WM training exposure not excluded. No new thresholds/layers/hyperparameters chosen from test. Development/calibration diagnostics retained unchanged.",
+  "split": "test",
+  "states": 45,
+  "families": 15,
+  "primary_horizon": 5,
+  "diagnostic_horizons": [
+    10,
+    20
+  ],
+  "primary_comparison": [
+    "lewm_global",
+    "controller_pusher"
+  ],
+  "secondary_comparisons": [
+    [
+      "vision_contact",
+      "controller_pusher"
+    ],
+    [
+      "vision_adaptive",
+      "vision_contact"
+    ],
+    [
+      "lewm_object",
+      "lewm_global"
+    ],
+    [
+      "lewm_history_object",
+      "lewm_global"
+    ],
+    [
+      "lewm_whitened",
+      "lewm_global"
+    ]
+  ],
+  "minimum_practical_U_difference": 0.1,
+  "interpretation": "Primary U is applied correction AND dense object preservation AND executed jerk reduction>=10%. Report paired family bootstrap95%interval. CI lower>0 supports positive difference; CI lower>=0.10 needed to establish the declared practical difference. Also require measured overall/contact selected-risk<=0.1 and active>=0.25; these are empirical endpoints, not certified population risk. No equivalence conclusion from nonsignificance. Secondary/multiple-method contrasts exploratory without multiplicity-adjusted confirmatory claims.",
+  "stages": [
+    "f1_h5",
+    "interventions",
+    "probe_capture",
+    "effects",
+    "family",
+    "strong",
+    "scores_interventions",
+    "scores_f1",
+    "scores_family",
+    "runtime_common",
+    "runtime_strong",
+    "horizon_f1",
+    "shifts",
+    "shifts_geometric",
+    "repeated",
+    "analyze",
+    "report"
+  ],
+  "family_verifiers": [
+    "controller_pusher",
+    "lewm_global",
+    "lewm_object",
+    "vision_contact",
+    "vision_adaptive"
+  ],
+  "retraining": false,
+  "policy_test_authorized_by_this_lock": false,
+  "cube_test_authorized_by_this_lock": false,
+  "cost_comparison": "Use frozen calibration budget selections; measure test latency/performance without choosing profiles from test. CPU/GPU costs and wider correction freedom of full-command baselines explicit.",
+  "oracle": "Best physically preserving candidate in each declared bank, diagnostic only, never selector input. No assertion of global optimum.",
+  "horizon_note": "H10/20 F1 candidate search is a locked diagnostic, not a retuned deployable selector. Repeated H20 uses existing fixed rules. Final primary hypothesis remains H5."
+}

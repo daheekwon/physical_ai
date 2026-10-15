@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "seeds": [340000,340001,340002,340003,340004,340005,340006,340007,340008,340009,340010,340011],
+  "methods": ["controller_displacement","proprio_contact","lewm_global"],
+  "radii": [0.025,0.05,0.1,0.2,0.4],
+  "horizon": 5,
+  "suffix": 3,
+  "torch_threads": 2,
+  "blas_threads": 2,
+  "grasp_height_above_initial_max_m": 0.025,
+  "transport_height_above_initial_min_m": 0.04,
+  "meaningful_gain": 0.1,
+  "scope": "Development finite-candidate physical oracle on12 existing nominal Cube policy/compiler families,4 phases chosen from nominal root state only before any candidate outcomes. Same past-PD H5 compiler and continuous polynomial generator, fixed float32 gripper commands,5 radii. Compare whole non-WM bank potential, original expert-transferred verifiers, physical preservation filter with expected-jerk rank, and finite physical oracle with realized jerk. Future branch outcomes are diagnostic only and unavailable to actual verifiers. No new policy calibration or finaltest, no claim of global optimality or wholeepisode preservation."
+}

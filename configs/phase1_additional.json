@@ -1,0 +1,26 @@
+{
+  "seed": 20261010,
+  "output": "artifacts/phase1_additional",
+  "base_manifest": "artifacts/phase1/manifest.json",
+  "proposal": "docs/ZJ_WAM_Research_Proposal_Updated_EN.tex",
+  "threads": 4,
+  "controls_radii": [0.02, 0.05, 0.1],
+  "frequency_draws": 3,
+  "oracle_horizons": [5, 10, 20],
+  "oracle_radii": [0.05, 0.1, 0.2, 0.4],
+  "oracle_random_directions": 16,
+  "oracle_low_directions": 2,
+  "oracle_counts": {
+    "development": {"contact": 2, "near_contact": 1, "free_motion": 1},
+    "calibration": {"contact": 8, "near_contact": 2, "free_motion": 2},
+    "test": {"contact": 16, "near_contact": 4, "free_motion": 4}
+  },
+  "suffix_actions": 3,
+  "polynomial_family": "quintic correction u^2(1-u)^2*(c0+c1*(2u-1)) per axis; zero endpoint value and first derivative",
+  "meaningful_jerk_reduction": 0.1,
+  "minimum_nominal_jerk": 1e-8,
+  "calibration_violation_limit": 0.1,
+  "bootstrap_samples": 2000,
+  "tolerances": {"position": 2.0, "rotation": 0.03490658503988659, "task_score_loss": 0.02},
+  "notes": "Exploratory proposal-driven diagnostics on existing family-disjoint splits. Existing test outcomes were seen in the earlier study. This protocol is locked before new candidate executions; it does not create an unseen external test set. No original calibration or result is refitted."
+}

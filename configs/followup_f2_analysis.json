@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "pusher_relative_caliper": 0.1,
+  "frequency_centroid_caliper": 0.25,
+  "minimum_pusher_magnitude": 0.000001,
+  "effect_dominance_ratio": 2.0,
+  "finite_difference_step": 0.05,
+  "finite_difference_audit_states": 12,
+  "note": "Fixed before reading matched outcomes. Match same state, without replacement, using pusher RMS/max and temporal centroid only; outcome labels never enter matching. Different applied norms may be matched and are reported."
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "verifier": "vision_adaptive",
+  "alpha_grid": [0.0, 0.25, 0.5, 1.0, 2.0],
+  "constant_radius_grid": [0.05, 0.1, 0.2, 0.3, 0.4],
+  "residual_cap": 10.0,
+  "early_stop_gain": 0.1,
+  "early_stop_fraction": 0.9,
+  "deadline_seconds": [0.05, 0.1, 0.5],
+  "methods": ["fixed", "allowance", "compute", "both", "constant_shrink", "cheap_only"],
+  "calibration": "Select one alpha shared by allowance/both and one constant radius using only nominal calibration states. Fixed original vision_adaptive tau/radius. Maximize mean useful joint success subject to overall/contact risk <=0.1 and active>=0.25 in each factorial arm; if no setting is feasible report the failure explicitly and evaluate the least-violating setting as a diagnostic, not a calibrated deployment rule.",
+  "allowance": "base_radius/(1+alpha*min(past_holdout_error,10)); affects acceptance only, not fixed-compute candidate generation. Past error: fit response gains on first past interval, predict held-out last5 past actions from middle observed state, compare with current observation. Maximum normalized object position, rotation and robot position residual. Not a calibrated uncertainty estimate.",
+  "computation": "First generate and score the four executed-jerk optimizer candidates, one per original radius. Stop only if an approved candidate reaches gain>=0.1 and >=0.9 of best stage-one unconstrained predicted gain. Otherwise generate raw-optimizer/random remainder and score only new candidates plus nominal reference. All methods use same potential bank and tie-break. cheap_only always stops after stage one.",
+  "cost": "Time actual visual estimation, held-out residual calculation when required, candidate generation, response scoring and selection. Excludes simulator rendering/sensor acquisition and evaluation replay. Same CPU process and inputs; report component timings, scored candidates, solver calls, p50/p95/deadlines. Shared host load means timing is observational, not isolated deployment validation.",
+  "scope": "H5 single corrections under existing eight effective/sensing conditions,105development105calibration. Online two-gain model common to all arms; only allowance/computation factors change. Finaltest gated. Does not establish cumulative preservation or cross-task adaptation. Calibration shifted conditions are descriptive, no retuning. Candidate-bank changes are audited against original shift archive."
+}

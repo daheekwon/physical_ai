@@ -1,0 +1,11 @@
+{
+ "version":1,
+ "total_actions":20,
+ "block_actions":5,
+ "rank":2,
+ "refresh_actions":{"low_frozen":1000000,"low_refresh10":10,"low_refresh5":5},
+ "verifier":"lewm_global",
+ "rules":"Reuse frozen H5 selector threshold/radius, unchanged across all three methods.",
+ "scope":"Same 2D polynomial subspace size and 72-candidate budget at each block. Only frequency of action-Jacobian recomputation changes. Every arm observes its own actual history; finite verifier is refreshed every block in all arms. Expert nominal actions remain fixed.",
+ "local_diagnostics":"After selection, execute nominal and chosen H5 action plus nominal suffix from identical current corrected-prefix root. These outcomes are evaluation-only and are never used by the next selector or Jacobian. Next history follows chosen actions only."
+}

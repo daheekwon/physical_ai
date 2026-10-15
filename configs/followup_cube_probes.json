@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "representations": [
+    "frame",
+    "history"
+  ],
+  "alphas": [
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+  ],
+  "readouts": [
+    "ridge_raw",
+    "ridge_symmetry",
+    "label_shuffle_symmetry",
+    "mlp_symmetry"
+  ],
+  "rotation_target": "Raw rotation matrix control versus cube-symmetry canonical representative nearest identity, deterministic tie break. Canonical choice is made on labels only; no test fitting.",
+  "angular_velocity": "Convert native body-frame free-joint angular velocity to world frame with the stored object rotation. Verified against quaternion finite differences on saved physics traces.",
+  "features": "Frame192 or concatenated history576. Current input[t-10,t-5,t]; future input[t-5,t,t+5]. Real or predicted endpoint occupies the identical last slot.",
+  "effect_alignment": "For symmetry-trained probes, align each decoded candidate orientation to decoded nominal by the nearest cube symmetry, using decoded poses only. Compare resulting relative effect with full physical relative rotation; do not alter E_obj. This local ambiguity resolution does not recover unobservable large symmetry rotations.",
+  "resolution_quantile": 0.9,
+  "scope": "Diagnostic supervised readouts only, frozen LeWM and correction selection unchanged. Development nominal capture selects ridge alpha. Calibration remains separate for capture/effect reporting. No finaltest accessed.",
+  "numeric_precision": "Probe fitting/inference float64 to avoid ill-conditioned float32 ridge solve. Native LeWM encoding and prediction stay float32.",
+  "direction_agreement": "A predicted effect norm<=1e-8m has no direction. Conditional cosine requires both resolved true effect and nonzero prediction; report availability separately, including undefined zero-control direction."
+}

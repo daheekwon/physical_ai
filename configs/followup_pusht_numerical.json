@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "split": "development",
+  "states_per_nominal_phase": 4,
+  "phase_order": ["free", "contact"],
+  "selection": "For each nominal phase, first chronological window of each sorted distinct initial family; first four families. Same family may appear in both phases and remains one cluster.",
+  "rates": [100, 200, 400],
+  "baseline_repeats": 2,
+  "position_tolerance_px": 2.0,
+  "rotation_tolerance_deg": 2.0,
+  "coverage_loss_tolerance": 0.02,
+  "minimum_jerk_gain": 0.1,
+  "scope": "Development local numerical sensitivity of fixed policy-bank interventions. Original 100Hz prefix and identical restored full root for all rates; integration changes only over H5 plus unchanged3action suffix. Fixed10Hz actions, PD gains100/20, relative-command semantics and physical duration. Primary jerk uses common100Hz timestamps. No whole-episode integration convergence, no new model efficacy or independent test claim."
+}

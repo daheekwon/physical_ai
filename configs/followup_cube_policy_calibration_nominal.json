@@ -1,0 +1,10 @@
+{
+ "version": 1,
+ "calibration_seed_start": 340100,
+ "calibration_families": 24,
+ "reserved_test_seed_start": 340200,
+ "reserved_test_families": 64,
+ "smoke_seed": 340000,
+ "mode": "past_pd_h5",
+ "scope": "New Cube native-planner calibration initial families, separate from existing12policy development families. Fixed existing causal pastPDH5 compiler and15s duration; privileged native plan known at reset, not a pixel policy. Register but do not execute reserved64finalfamilies before later method/rule lock. Compare new initial qpos/qvel with full10000expert initial states and existing12native source families; no claim of model-pretraining independence. This stage collects nominal behavior only, no correction/condition tuning or efficacy claim."
+}

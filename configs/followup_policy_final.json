@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "scope": "Held-out frozen-expert-rule transfer to closed-loop Diffusion Policy; separate from expert/Cube final tests and from a policy-recalibrated deployable method. Keep all six original methods, even if calibration diagnostic fails. No new rule fitting or test tuning.",
+  "test_source": "Original followup_policy_refinement.json reserved12seeds212000..212011, unchanged.",
+  "primary": "Paired episode-level joint preservation+actualjerk10percent: lewm_global minus controller_pusher. Global reference is unmodified policy from same initial state and per-call noise rule. Local chunk effects separately reported.",
+  "secondary": ["vision_contact minus controller_pusher", "vision_adaptive minus vision_contact", "gaussian_action minus controller_pusher"],
+  "minimum_practical_U_difference": 0.1,
+  "qualification": "Empirical global violation among modified episodes<=0.10 and active episode fraction>=0.25; report local and global separately. Passing smallsample criterion is not a population risk guarantee.",
+  "sample_precision": "Retain prespecified12testfamilies. Report familybootstrap paired differences and exact binomial95percent intervals for per-method episode indicators. Degenerate bootstrap interval is not equivalence. With0/12 events the two-sided exact upper bound is about26.5percent; cannot certify10percent rare risk or small improvements.",
+  "causal_scope": "Fixed300action episode, no success earlystop. Subsequent ownobservations affect policy actions. Same boundedabsolute-relative compiler and frozen100stepDP/LeWM/thresholds for allarms. Shared initialstate checked against previoussplitfamilies. No latency injection in this experiment.",
+  "gates": "Full development/calibration12seed72episode raw audits; preserved inputs and frozen upstream expert rules; no prior policytest output; separate immutable policyfinal lock. Begin only after PushT runtime_strong.done to avoid adding GPU work during timing.",
+  "reporting": "Report all methods and completed episodes, global+local error/jerk/success and firstviolation. Policy risk failure is a result, not an exclusion rule. Original native50 compatibility and expert test are separate. No population equivalence or generic safety claim."
+}

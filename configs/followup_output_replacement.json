@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "seed": 20261011,
+  "representations": {"lewm": ["lewm_frame", "lewm_history"], "dino": ["dino_projected_patch_mean", "dino_projected_spatial_quadrants"]},
+  "targets": {"pusht": ["raw"], "ogb-cube": ["raw", "symmetry"]},
+  "learner": "ridge",
+  "levels": ["predicted", "real_encoded", "true_endpoint", "dense_pose", "dense_full"],
+  "modes": ["unit_budget", "predicted_rule_transfer", "separately_calibrated"],
+  "threshold_quantiles": 41,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "minimum_norm": 0.000001,
+  "minimum_predicted_gain": 0.00000001,
+  "meaningful_gain": 0.1,
+  "enforce_pusht_contact_risk": true,
+  "scope": "Plan4.6/F5 post-hoc replacement diagnosis on existing development/calibration commonF1H5 banks. Same candidates, expected controller-jerk ranking and frozen full-data ridge readout throughout each chain. No newphysics or finaltest. Levels2-5 use future information and cannot be deployed. Compare literal normalizedtau1, threshold calibrated on predictedscore thenheldunchanged acrosslevels, and separate same-budget calibration ofeachlevel; disabledpredictedrule staysdisabled ontransfer. Completephysicalcases retained. Cube raw and symmetry readouts separately reported; physicaltruth alwaysfullSO3, symmetryreadout cannot certify unobservableorientation. Densepose/full split isolatescoverage. All thresholds may exceed1 after empiricalcalibration, includingfuturelevels; only unitdensefull is an exactphysicalfilter ofthisfinitebank. Readoutfits/hyperparameters alreadyused development; developmenthereisdiagnostic,notfreshfinalevidence. Candidatebank containsLeWMdirections."
+}

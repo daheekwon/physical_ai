@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "families_per_task": 3,
+  "split": "development",
+  "device": "cpu",
+  "precision": "fp32",
+  "torch_threads": 2,
+  "tasks": ["pusht","ogb-cube"],
+  "scope": "Bounded actual-intervention diagnostic before full model comparison. First3 development families from existing PushT H5 family-ablation bank (3states/family) and Cube bank (4phases/family). Use all existing candidate actions per state, including nominal. Banks were made before DINO-WM evaluation; no selection on DINO outcomes. No new physical trajectories or test data. Third-party retrained no-proprio weights, not original LeWM baseline weights. CPUFP32 differs from released GPUbf16 config and is explicitly a diagnostic.",
+  "metrics": "Per-state rank correlation of predicted latent RMS change with true dense object error, of actual-image encoded RMS change with true error, and of predicted with actual-image encoded change. Compare vector intervention effect with realized encoded effect using cosine and L2 error. Raw whole-patch latent also includes robot/background; not an object-only safety score. No thresholds calibrated here; no deployed U/R or method superiority claim. Same-time physical tolerance and existing controller jerk metrics inherited without alteration."
+}

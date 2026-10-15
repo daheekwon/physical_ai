@@ -1,0 +1,13 @@
+{
+ "version": 1,
+ "variants": ["past_pd","diagonal_arx","coupled_arx"],
+ "history_physics_steps": 250,
+ "ridge": 0.001,
+ "minimum_feature_std": 0.0000001,
+ "minimum_singular_ratio": 0.00001,
+ "maximum_spectral_radius": 1.000001,
+ "physics_dt": 0.002,
+ "substeps": 25,
+ "meaningful_gain": 0.1,
+ "scope": "F7/Cube objective-fidelity development diagnosis on same48audited policy roots and899finite candidates. Fit causal affine ARX only from prior250EEF/known-target samples; no future robot/object fitting. Compare diagonal/coupled models against existing pastPD. Rank same fixed candidates under original fixed verifiers and separately true-preservation oracle. Candidate generator and verifier scores unchanged; no recalibration/retraining/test/repeated adaptation claim. Fallback to existing PD on unexcited, rankdeficient or unstable fit; report support. Higher ranking fidelity must later be tested with regenerated candidates and new calibration/finalfamilies."
+}

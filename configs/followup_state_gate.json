@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "seed": 20261012,
+  "training_families": 24,
+  "projection_dimension": 8,
+  "ridge_alpha": 10.0,
+  "sensitivity_quantile": 0.95,
+  "sensitivity_floor": 0.000001,
+  "controller_floor": 0.000001,
+  "maximum_relative_radius": 0.2,
+  "threshold_quantiles": 41,
+  "target_risk": 0.1,
+  "minimum_active_fraction": 0.25,
+  "minimum_norm": 0.000001,
+  "minimum_predicted_gain": 0.00000001,
+  "meaningful_gain": 0.1,
+  "enforce_pusht_contact_risk": true,
+  "methods": ["controller_only", "current_state_gate", "nominal_future_gate", "candidate_future"],
+  "scope": "New F9 diagnostic on existing PushT F1 H5 development/calibration. Split development families deterministically into gate-fit24 and diagnostic11; calibration35 is disjoint from gate-fit and diagnostic. Existing readout/model investigations already exposed development, so diagnostic11 is not fresh finaltest. Both gates use the same fixed unsupervised 192-to-8 projection and fixed-alpha ridge, with current frame or nominal predicted endpoint as input; both predict log state-level95thquantile of dense object-error/controller-displacement across training candidates. Gates receive physical labels at fit time; candidatefuture uses native frozen LeWM latent distance. Features, label amount and unequal supervision explicitly disclosed. Gate inference never receives future executed object outcomes. Same non-WM controller/random candidatebank, radius<=.2 and expected-jerk ranking. No online runtime or new physics; require subsequent newly collected finaltest and actual inference cost comparison before deployment claims."
+}

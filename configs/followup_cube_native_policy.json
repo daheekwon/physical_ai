@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "development_seeds": [340000,340001,340002,340003,340004,340005,340006,340007,340008,340009,340010,340011],
+  "validation_seeds": [340000,340001],
+  "policies": ["markov", "plan"],
+  "control_steps": 300,
+  "control_dt": 0.05,
+  "physics_dt": 0.002,
+  "markov_min_norm": 0.4,
+  "plan_segment_dt": 0.4,
+  "plan_noise": 0.0,
+  "minimum_start_goal_separation_m": 0.1,
+  "action_dtype": "float32",
+  "scope": "Compatibility and nominal-performance baseline for Cube closed loop. Native installed OGBench CubeMarkovOracle and CubePlanOracle, no added action/plan noise. Fixed single target for300 control steps15s, no automatic next-target reset when oracle.done. Privileged current object state and robot proprioception; no future simulator branch for policy input. Explicit seeded initial cube/goal/EEF variations, environment-owned RNG and global oracle RNG. This differs from default noisy multi-target data-collection wrapper and is reported as a fixed-target baseline variant. No smoothing, no learned policy claim, no finaltest."
+}

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "task": "pusht",
+  "splits": ["development","calibration"],
+  "threads": 2,
+  "batch_size": 16,
+  "absolute_parity_tolerance": 0.0002,
+  "relative_parity_tolerance": 0.0002,
+  "scope": "Collect frozen LeWM projected current-history and real/predicted endpoint features on exactly the F1H5 73candidate common banks used by DINO. Existing same-named lewm_audit/effects files refer to a different225candidate bank; only nominal endpoint/history can be compared after image/action equality. CPUfloat32 native encoder/predictor with verified current checkpoint; compare all predictions to original GPUfloat32 response_scores/f1 and nominal real feature to original intervention endpoint. Numerical parity errors explicitly recorded, not exact device equivalence. No new physics, no training, no newtest. Enables common-bank probe stability and actual-output replacement selection diagnosis."
+}

@@ -1,0 +1,25 @@
+.venv/
+external/
+data/
+__pycache__/
+.pytest_cache/
+*.pyc
+artifacts/setup/source_reference/
+
+# Generated research outputs, intermediate artifacts, and private working notes.
+artifacts/
+outputs/
+docs/
+
+# Python build and tool caches.
+.coverage
+.mypy_cache/
+.ruff_cache/
+.tox/
+*.egg-info/
+build/
+dist/
+
+# Experiment tracking and operating-system files.
+wandb/
+.DS_Store

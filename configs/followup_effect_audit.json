@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "resolution_error_quantile": 0.9,
+  "resolution_multiplier": 2.0,
+  "position_bins_px": [0.0, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 1000000.0],
+  "rotation_bins_deg": [0.0, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 180.0001],
+  "direction_cosine_threshold": 0.7071067811865476,
+  "readouts": ["ridge", "mlp64"],
+  "representations": ["projected_cls", "encoder_cls", "middle_cls", "spatial_quadrants", "history_projected"],
+  "note": "Resolution is a diagnostic, not a safety threshold: 2 times calibration 90th percentile real-encoded paired-effect error, separately position and rotation. All unresolved cases remain in physical preservation statistics. Ridge hyperparameters selected on development only; final independent evaluation deferred until selection lock."
+}

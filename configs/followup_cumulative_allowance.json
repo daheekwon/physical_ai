@@ -1,0 +1,17 @@
+{
+  "version":1,
+  "total_actions":20,
+  "block_actions":5,
+  "core_suffix_actions":3,
+  "long_suffix_max_actions":10,
+  "tiers":["vision","state"],
+  "methods":["local","constant_shrink","remaining_margin","reference_forecast"],
+  "multiplier_grid":[0.125,0.25,0.5,1.0],
+  "base_rule":"Original vision_adaptive H5 threshold and radius are the shared baseline. Two online response gains and same common polynomial candidate bank in every arm. Only reference use and allowance change. Tier-specific calibration of multiplier from nominal calibration families only.",
+  "reference_access":"A pre-recorded unmodified expert reference at each block root is supplied to all arms. Vision tier receives its rendered history/proprioception and uses the same known-shape/color estimator as current execution. State tier receives true current/reference states as a privileged diagnostic. Neither tier receives future counterfactual outcomes for selection. True future reference trajectory is evaluation-only.",
+  "remaining_margin":"Compute max(current-reference normalized position/rotation error), remaining=max(0,1-error), multiply base radius/tau by calibration multiplier and remaining. This is a proxy, not a safety guarantee.",
+  "reference_forecast":"Roll current candidate from current observed root and nominal expert actions from supplied reference root using the same current-past fitted contact-response gains. Limit maximum difference between these predicted object trajectories over5actions+3suffix. This predicts accumulated deviation rather than only the candidate-minus-nominal local effect. No future true object states used.",
+  "calibration":"For constant_shrink,remaining_margin,reference_forecast choose one multiplier per tier by maximizing global joint preservation+jerk success subject to overall/contact applied risk<=0.1 and active>=0.25. If infeasible choose minimum-risk diagnostic setting and explicitly flag no feasible deployment rule. Local arm keeps original rule. No development/test tuning.",
+  "evaluation":"Same20actions+3core suffix and up10long suffix as prior repeated experiment. E_long=max(E_core,raw_long_E) retains coverage checks. Record terminal velocity at20 and23actions, drift, first violation, correction stop and persistent violation. Fallback does not reset accumulated deviation.",
+  "scope":"Reference-available expert replay, not deployable counterfactual reference for a closed-loop policy. Vision and privileged-state tiers separate. No claim that current margin alone bounds future error. Same model predicts both roots; approximation and stale dynamics may still fail. Finaltest locked."
+}

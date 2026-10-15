@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "development_seeds": [350100,350101,350102,350103,350104,350105,350106,350107,350108,350109,350110,350111],
+  "calibration_seeds": [350000,350001,350002,350003,350004,350005,350006,350007,350008,350009,350010,350011,350012,350013,350014,350015,350016,350017,350018,350019,350020,350021,350022,350023],
+  "reserved_test_seed_start": 350200,
+  "reserved_test_family_count": 64,
+  "max_actions": 300,
+  "matched_chunk_control_steps": [16,96,192],
+  "policy_device": "cuda:2",
+  "policy_checkpoint": "data/checkpoints/diffusion-policy-pusht/epoch0500.ckpt",
+  "scope": "Fresh downstream PushT initial families for frozen-policy model-comparison extension. Existing expert file's185 initial families are exhausted; do not describe these as new expert trajectories. Generate only nominal development/calibration episodes now, with frozen original DP and validated SWM action adapter. Same300control physical duration,8action policy chunks, H5+suffix3 windows at fixed16/96/192 controls. New test seeds reserved but no policy predictions/outcomes or threshold evaluation before later method/calibration lock. No policy or WM learning. Normalization remains existing official expert scaler; pretraining exposure distinct."
+}
